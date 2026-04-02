@@ -3,118 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draegor Bloodstone | Official Portfolio</title>
+    <title>Draegor Bloodstone | Vedic Asura</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
-    <style>
-        body { background-color: #0b0b0b; color: #e0e0e0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
-        header { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1920x1080'); background-size: cover; border-bottom: 2px solid #8b0000; }
-        h1 { 
-    font-size: 5rem; /* Made it a bit larger for the script font */
-    color: #FFD700; /* A classic Golden Yellow */
-    margin-bottom: 10px; 
-    font-family: 'Edwardian Script ITC', 'Pinyon Script', cursive; 
-    font-weight: normal;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8); /* Adds depth to the yellow */
-    letter-spacing: 2px; 
-
-    /* THE GLOW EFFECT */
-    text-shadow: 
-        0 0 5px #FFD700, /* A sharp inner glow */
-        0 0 10px #FFD700, /* A softer middle glow */
-        0 0 20px #FFD700, /* An outer radiating glow */
-        0 0 30px #FFD700; /* An extended, dimmer glow to add depth */
-}
-        p.tagline { font-size: 1.5rem; max-width: 800px; line-height: 1.6; }
-        .container { padding: 50px 10%; }
-        .video-section { text-align: center; margin-bottom: 50px; }
-        iframe { width: 100%; max-width: 800px; height: 450px; border: 2px solid #333; }
-        .about { line-height: 1.8; font-size: 1.1rem; }
-        footer { text-align: center; padding: 40px; color: #666; font-size: 0.9rem; }
-        .btn { padding: 15px 30px; background-color: #8b0000; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.3s; }
-        .btn:hover { background-color: #ff3333; }
-    </style>
     <link rel="icon" type="image/png" href="favicon.png">
+
+    <style>
+        /* 1. RESET & BASE STYLES */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --nav-height: 80px;
+            --gold: #FFD700;
+            --blood-red: #8b0000;
+        }
+
+        body { 
+            background-color: #0b0b0b; 
+            color: #e0e0e0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            line-height: 1.6;
+        }
+
+        /* 2. VEDIC ASURA NAVBAR */
+        .navbar {
+            height: var(--nav-height);
+            background-color: #050505;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            border-bottom: 1px solid #333;
+            position: relative; /* Ensures it pushes the header down */
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-logo {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+        }
+
+        .studio-name {
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-right a {
+            color: #bbb;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-right a:hover { color: var(--gold); }
+
+        /* 3. CINEMATIC HEADER (The Frame) */
+        header {
+            height: calc(100vh - var(--nav-height)); 
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        header video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Slight darkening for text pop */
+            z-index: -1;
+        }
+
+        /* 4. THE GLOWING TITLE */
+        h1 { 
+            font-family: 'Edwardian Script ITC', 'Pinyon Script', cursive; 
+            font-size: 5.5rem; 
+            color: var(--gold); 
+            margin-bottom: 10px;
+            font-weight: normal;
+            letter-spacing: 2px;
+            text-shadow: 
+                0 0 10px var(--gold),
+                0 0 20px var(--gold),
+                0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .tagline { 
+            font-size: 1.4rem; 
+            max-width: 800px; 
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .btn { 
+            padding: 15px 35px; 
+            background-color: var(--blood-red); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s; 
+            border: 1px solid transparent;
+        }
+
+        .btn:hover { 
+            background-color: transparent; 
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        /* 5. CONTENT SECTIONS */
+        .container { padding: 80px 10%; }
+        
+        .video-section { text-align: center; margin-bottom: 80px; }
+        
+        .video-section h2 { 
+            color: var(--gold); 
+            text-transform: uppercase; 
+            margin-bottom: 30px; 
+            letter-spacing: 2px;
+        }
+
+        iframe { 
+            width: 100%; 
+            max-width: 850px; 
+            height: 480px; 
+            border: 1px solid #333; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .about h2 { 
+            color: var(--gold); 
+            margin-bottom: 25px; 
+            text-transform: uppercase; 
+        }
+
+        .about p { font-size: 1.15rem; color: #aaa; }
+
+        footer { 
+            text-align: center; 
+            padding: 50px; 
+            color: #555; 
+            font-size: 0.85rem; 
+            border-top: 1px solid #222;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar">
-    <div class="nav-left">
-        <img src="favicon.png" alt="Vedic Asura Logo" class="nav-logo">
-        <span class="studio-name">Vedic Asura</span>
-    </div>
-    <div class="nav-right">
-        <a href="#home">Home</a>
-        <a href="#projects">Our Projects</a>
-        <a href="#about">About Us</a>
-    </div>
-</nav>
-<style>
-    :root {
-    --nav-height: 80px; /* We define this once to keep it consistent */
-}
 
-.navbar {
-    height: var(--nav-height);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 5%; /* Removed vertical padding to use fixed height */
-    background-color: #050505;
-    border-bottom: 1px solid #333;
-    position: relative; /* Changed from sticky to relative to ensure it pushes content */
-    z-index: 1000;
-}
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="favicon.png" alt="Vedic Asura Logo" class="nav-logo">
+            <span class="studio-name">Vedic Asura</span>
+        </div>
+        <div class="nav-right">
+            <a href="#">Home</a>
+            <a href="#projects">Our Projects</a>
+            <a href="#about">About Us</a>
+        </div>
+    </nav>
 
-header {
-    /* This is the magic line */
-    height: calc(100vh - var(--nav-height)); 
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    background-color: #000; /* Black bars if the video doesn't fit perfectly */
-}
+    <header>
+        <video autoplay muted loop playsinline>
+            <source src="Draegor_Teaser.mp4" type="video/mp4">
+        </video>
+        <div class="overlay"></div>
+        
+        <h1>Draegor Bloodstone</h1>
+        <p class="tagline">In a realm where mythologies collide and gods are forged in shadow.</p>
+        <a href="https://www.youtube.com/watch?v=ST5frU5Q87A" class="btn" target="_blank" rel="noopener noreferrer">Watch the Devlog</a>
+    </header>
 
-/* Ensure the video respects the new header boundaries */
-header video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: cover; /* This ensures your 1920x800 fills the space */
-}
-</style>
-<header style="position: relative; height: 80vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-    
-    <video autoplay muted loop playsinline style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -2; transform: translate(-50%, -50%); object-fit: cover;">
-        <source src="Draegor_Teaser.mp4" type="video/mp4">
-    </video>
+    <div class="container" id="projects">
+        <div class="video-section">
+            <h2>Latest Cinematic Teaser</h2>
+            <iframe src="https://www.youtube.com/embed/ST5frU5Q87A" frameborder="0" allowfullscreen></iframe>
+        </div>
 
-    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); z-index: -1;"></div>
-    
-    <h1>Draegor Bloodstone</h1>
-    <p class="tagline">In a realm where mythologies collide and gods are forged in shadow, Draegor Bloodstone emerges. Crafted in Unreal Engine.</p>
-    <br>
-    <a href="https://www.youtube.com/watch?v=ST5frU5Q87A" class="btn" target="_blank" rel="noopener noreferrer">Watch the Devlog</a>
-</header>
-
-<div class="container">
-    <div class="video-section">
-        <h2>Latest Cinematic Teaser</h2>
-        <iframe src="https://www.youtube.com/embed/ST5frU5Q87A" frameborder="0" allowfullscreen></iframe>
+        <div class="about" id="about">
+            <h2>About the Project</h2>
+            <p>Developed entirely in Unreal Engine, <strong>Draegor Bloodstone</strong> is a cinematic journey into the heart of an anti-hero. By bridging the gap between ancient Norse, Greek, and Hindu lore, this project explores the evolution of a god-like being in a high-fidelity digital world.</p>
+        </div>
     </div>
 
-    <div class="about">
-        <h2>About the Project</h2>
-        <p>Developed entirely in Unreal Engine, <strong>Draegor Bloodstone</strong> is a cinematic journey into the heart of an anti-hero. By bridging the gap between ancient Norse, Greek, and Hindu lore, this project explores the evolution of a god-like being in a high-fidelity digital world.</p>
-    </div>
-</div>
-
-<footer>
-    &copy; 2026 Sudev Films. All Rights Reserved. Created with Unreal Engine & Character Creator.
-</footer>
+    <footer>
+        &copy; 2026 VEDIC ASURA STUDIOS. All Rights Reserved. Created by Sudev.
+    </footer>
 
 </body>
 </html>
