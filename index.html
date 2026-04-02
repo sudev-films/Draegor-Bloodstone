@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Draegor Bloodstone | Vedic Asura</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Eagle+Lake&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
 
     <style>
@@ -32,30 +32,34 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 5%;
+            /* Padding 0 on top/bottom allows the logo to touch the edges */
+            padding: 0 5% 0 0; 
             border-bottom: 1px solid #333;
-            position: relative; /* Ensures it pushes the header down */
+            position: relative;
             z-index: 1000;
         }
 
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            height: 100%; /* Ensures the container fills the bar */
+            gap: 20px;
         }
 
         .nav-logo {
-            height: 50px;
-            width: 50px;
-            object-fit: contain;
+            height: var(--nav-height); /* Forces logo to match bar height */
+            width: auto; /* Maintains aspect ratio */
+            object-fit: cover; /* Ensures it fills the square area if needed */
+            display: block;
         }
 
         .studio-name {
+            font-family: 'Eagle Lake', serif; /* The new mythological font */
             color: var(--gold);
-            font-weight: 800;
-            font-size: 1.4rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            text-transform: none; /* Eagle Lake looks better in mixed case */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
         .nav-right a {
@@ -70,7 +74,7 @@
 
         .nav-right a:hover { color: var(--gold); }
 
-        /* 3. CINEMATIC HEADER (The Frame) */
+        /* 3. CINEMATIC HEADER */
         header {
             height: calc(100vh - var(--nav-height)); 
             width: 100%;
@@ -102,7 +106,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* Slight darkening for text pop */
+            background: rgba(0, 0, 0, 0.4);
             z-index: -1;
         }
 
