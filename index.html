@@ -48,56 +48,42 @@
     </div>
 </nav>
 <style>
-    /* Navigation Bar Styling */
+    :root {
+    --nav-height: 80px; /* We define this once to keep it consistent */
+}
+
 .navbar {
+    height: var(--nav-height);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 5%;
-    background-color: #050505; /* Slightly darker than the page for depth */
+    padding: 0 5%; /* Removed vertical padding to use fixed height */
+    background-color: #050505;
     border-bottom: 1px solid #333;
-    position: sticky; /* Keeps it at the top while scrolling */
-    top: 0;
+    position: relative; /* Changed from sticky to relative to ensure it pushes content */
     z-index: 1000;
 }
 
-.nav-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.nav-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px; /* Keeps your Photoshop silhouette crisp */
-}
-
-.studio-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #FFD700; /* Matches your Draegor Gold */
-    letter-spacing: 1px;
-}
-
-.nav-right a {
-    color: #e0e0e0;
-    text-decoration: none;
-    margin-left: 30px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    transition: 0.3s;
-}
-
-.nav-right a:hover {
-    color: #FFD700; /* Glows gold on hover */
-}
-
-/* Adjust the Header to fit the remaining screen */
 header {
-    height: calc(100vh - 70px); /* 100% of screen minus the navbar height */
+    /* This is the magic line */
+    height: calc(100vh - var(--nav-height)); 
+    width: 100%;
     position: relative;
     overflow: hidden;
+    background-color: #000; /* Black bars if the video doesn't fit perfectly */
+}
+
+/* Ensure the video respects the new header boundaries */
+header video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover; /* This ensures your 1920x800 fills the space */
 }
 </style>
 <header style="position: relative; height: 80vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
