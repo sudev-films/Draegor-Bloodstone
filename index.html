@@ -63,17 +63,50 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
-        .nav-right a {
-            color: #bbb;
-            text-decoration: none;
-            margin-left: 30px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            transition: 0.3s;
-        }
+       /* Container for the icons */
+.social-cluster {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-right: 20px; /* Separates icons from text links */
+}
 
-        .nav-right a:hover { color: var(--gold); }
+/* Initial state: Icons are smaller */
+.social-icon {
+    width: 35px; /* Adjust based on your preference */
+    height: auto;
+    transition: transform 0.2s ease-in-out; /* Smooth scale up */
+    display: block;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+}
+
+/* Hover state: Scale up and trigger vibration */
+.social-link:hover .social-icon {
+    transform: scale(1.3); /* The "Balloon" expanding */
+    animation: vibrate 0.1s linear infinite; /* The "Bursting" vibration */
+}
+
+/* THE VIBRATION KEYFRAMES */
+@keyframes vibrate {
+    0% { transform: scale(1.3) translate(0, 0) rotate(0deg); }
+    25% { transform: scale(1.3) translate(1px, -1px) rotate(1deg); }
+    50% { transform: scale(1.3) translate(-1px, 1px) rotate(-1deg); }
+    75% { transform: scale(1.3) translate(1px, 1px) rotate(0deg); }
+    100% { transform: scale(1.3) translate(-1px, -1px) rotate(1deg); }
+}
+
+/* Clean up the text links styling */
+.nav-txt {
+    color: #bbb;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.nav-txt:hover { color: var(--gold); }
 
         /* 3. CINEMATIC HEADER */
         header {
@@ -170,16 +203,26 @@
 <body>
 
     <nav class="navbar">
-        <div class="nav-left">
-            <img src="favicon.png" alt="Vedic Asura Logo" class="nav-logo">
-            <span class="studio-name">Vedic Asura</span>
+    <div class="nav-left">
+        <img src="favicon.png" alt="Vedic Asura Logo" class="nav-logo">
+        <span class="studio-name">Vedic Asura</span>
+    </div>
+    
+    <div class="nav-right">
+        <div class="social-cluster">
+            <a href="https://instagram.com/iamsudevmulloor" target="_blank" class="social-link">
+                <img src="Instagram.png" alt="Instagram" class="social-icon">
+            </a>
+            <a href="https://youtube.com/@sudevmulloorart" target="_blank" class="social-link">
+                <img src="YouTube.png" alt="YouTube" class="social-icon">
+            </a>
         </div>
-        <div class="nav-right">
-            <a href="#">Home</a>
-            <a href="#projects">Our Projects</a>
-            <a href="#about">About Us</a>
-        </div>
-    </nav>
+        
+        <a href="#" class="nav-txt">Home</a>
+        <a href="#projects" class="nav-txt">Our Projects</a>
+        <a href="#about" class="nav-txt">About Us</a>
+    </div>
+</nav>
 
     <header>
         <video autoplay muted loop playsinline>
