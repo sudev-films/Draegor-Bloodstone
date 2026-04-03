@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draegor Bloodstone | Vedic Asura</title>
+    <title>Vedic Asura | Studio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Eagle+Lake&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Source+Serif+4:wght@800;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
 
     <style>
         /* 1. RESET & BASE STYLES */
@@ -16,7 +15,7 @@
         :root {
             --nav-height: 80px;
             --gold: #FFD700;
-            --blood-red: #8b0000;
+            --space-img: url('space-bg.jpg'); /* Ensure this file is in your folder */
         }
 
         body { 
@@ -24,335 +23,203 @@
             color: #e0e0e0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* 2. VEDIC ASURA NAVBAR */
+        /* 2. NAVBAR */
         .navbar {
             height: var(--nav-height);
             background-color: #050505;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /* Padding 0 on top/bottom allows the logo to touch the edges */
-            padding: 0 5% 0 0; 
+            padding: 0 5%; 
             border-bottom: 1px solid #333;
-            position: relative;
+            position: fixed; /* Keep it at the top while scrolling */
+            width: 100%;
+            top: 0;
             z-index: 1000;
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            height: 100%; /* Ensures the container fills the bar */
-            gap: 20px;
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .nav-logo { height: 50px; width: auto; }
+        .studio-name { font-family: 'Eagle Lake', serif; color: var(--gold); font-size: 1.6rem; }
+
+        .nav-right { display: flex; align-items: center; }
+        .social-cluster { display: flex; gap: 15px; margin-right: 30px; }
+        .social-icon { width: 30px; transition: 0.2s; }
+        .social-link:hover .social-icon { transform: scale(1.3); animation: vibrate 0.1s linear infinite; }
+
+        @keyframes vibrate {
+            0% { transform: scale(1.3) translate(0, 0); }
+            25% { transform: scale(1.3) translate(1px, -1px); }
+            50% { transform: scale(1.3) translate(-1px, 1px); }
+            100% { transform: scale(1.3) translate(0, 0); }
         }
 
-        .nav-logo {
-            height: var(--nav-height); /* Forces logo to match bar height */
-            width: auto; /* Maintains aspect ratio */
-            object-fit: cover; /* Ensures it fills the square area if needed */
-            display: block;
-        }
-
-        .studio-name {
-            font-family: 'Eagle Lake', serif; /* The new mythological font */
-            color: var(--gold);
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            text-transform: none; /* Eagle Lake looks better in mixed case */
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-        }
-
-        .nav-right {
-    display: flex;       /* This is the magic: it forces a horizontal row */
-    align-items: center; /* This aligns icons and text perfectly in the middle vertically */
-}
-
-.social-cluster {
-    display: flex;       /* This keeps the two icons side-by-side */
-    gap: 15px;           /* Space between the two icons */
-    margin-right: 30px;  /* Space between the icons and the first text link */
-}
-
-/* Initial state: Icons are smaller */
-.social-icon {
-    width: 35px; /* Adjust based on your preference */
-    height: auto;
-    transition: transform 0.2s ease-in-out; /* Smooth scale up */
-    display: block;
-    filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-}
-
-/* Hover state: Scale up and trigger vibration */
-.social-link:hover .social-icon {
-    transform: scale(1.3); /* The "Balloon" expanding */
-    animation: vibrate 0.1s linear infinite; /* The "Bursting" vibration */
-}
-
-/* THE VIBRATION KEYFRAMES */
-@keyframes vibrate {
-    0% { transform: scale(1.3) translate(0, 0) rotate(0deg); }
-    25% { transform: scale(1.3) translate(1px, -1px) rotate(1deg); }
-    50% { transform: scale(1.3) translate(-1px, 1px) rotate(-1deg); }
-    75% { transform: scale(1.3) translate(1px, 1px) rotate(0deg); }
-    100% { transform: scale(1.3) translate(-1px, -1px) rotate(1deg); }
-}
-
-/* Clean up the text links styling */
-.nav-txt {
-    color: #e0e0e0;
-    text-decoration: none;
-    margin-left: 25px;   /* Space between individual text links */
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-.nav-txt:hover { color: var(--gold); }
+        .nav-txt { color: #e0e0e0; text-decoration: none; margin-left: 25px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; }
+        .nav-txt:hover { color: var(--gold); }
 
         /* 3. CINEMATIC HEADER */
         header {
-    height: calc(100vh - var(--nav-height)); 
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    
-    /* POSITIONING THE TEXT LOWER */
-    display: flex; 
-    flex-direction: column; 
-    justify-content: flex-end; /* Pushes content to the bottom */
-    align-items: center; 
-    text-align: center;
-    padding-bottom: 16vh; /* This sits the text at roughly the 75-80% mark */
-}
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            display: flex; 
+            justify-content: flex-end; 
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 15vh;
+            overflow: hidden;
+        }
 
         header video {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            min-width: 100%; min-height: 100%;
             z-index: -2;
             object-fit: cover;
         }
 
         .overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.4);
             z-index: -1;
         }
         
         .tagline { 
-    font-family: 'Source Serif 4', serif;
-    font-size: 3.8rem; /* Slightly larger to handle the boldness */
-    font-weight: 800; /* Extra Bold for that authoritative studio look */
-    color: #ffffff; 
-    max-width: 1000px; 
-    line-height: 1.1;
-    text-transform: none;
-    
-    /* Stronger shadow for bold white text over video */
-    text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); 
-    
-    /* Subtle letter-spacing to prevent bold letters from looking cramped */
-    letter-spacing: -1px; 
-}
-        
-        /* 5. CONTENT SECTIONS */
-        .container { padding: 80px 10%; }
-        
-        .video-section { text-align: center; margin-bottom: 80px; }
-        
-        .video-section h2 { 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            margin-bottom: 30px; 
-            letter-spacing: 2px;
+            font-family: 'Source Serif 4', serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #ffffff; 
+            max-width: 900px; 
+            text-align: center;
+            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); 
         }
 
-        iframe { 
-            width: 100%; 
-            max-width: 850px; 
-            height: 480px; 
-            border: 1px solid #333; 
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        /* 4. THE INVERSION SECTION */
+        .inversion-wrapper {
+            position: relative;
+            height: 150vh;
+            background-color: #0b0b0b;
+            transition: background-color 0.6s ease;
         }
 
-        .about h2 { 
-            color: var(--gold); 
-            margin-bottom: 25px; 
-            text-transform: uppercase; 
+        .space-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            background: var(--space-img) center center / cover no-repeat;
+            z-index: -5;
+            opacity: 0; /* Hidden until we scroll to the quote */
+            transition: opacity 0.5s;
         }
 
-        .about p { font-size: 1.15rem; color: #aaa; }
-
-        footer { 
-            text-align: center; 
-            padding: 50px; 
-            color: #555; 
-            font-size: 0.85rem; 
-            border-top: 1px solid #222;
+        .quote-container {
+            position: sticky;
+            top: 0; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        :root {
-    --space-img: url('space-bg.jpg'); /* Ensure your file name matches exactly */
-}
+        .quote-text {
+            font-family: 'Source Serif 4', serif;
+            font-size: 5.5rem;
+            font-weight: 900;
+            color: white;
+            transition: 0.5s;
+        }
 
-.inversion-wrapper {
-    position: relative;
-    height: 150vh; /* Extra height to allow for the scroll transition */
-    background-color: transparent;
-    transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-}
+        /* Active state triggered by JS */
+        .active-inversion { background-color: white !important; }
+        .active-inversion .quote-text {
+            background: var(--space-img) fixed center center / cover no-repeat;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
 
-/* The space image that moves slightly slower for Parallax */
-.space-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 120vh; /* Taller than the screen to allow for parallax movement */
-    background: var(--space-img) center center / cover no-repeat;
-    z-index: -1;
-    transform: translateY(0);
-    will-change: transform;
-}
+        /* 5. GENERAL SECTIONS */
+        .container { padding: 100px 10%; background: white; color: black; position: relative; z-index: 10; }
+        .video-section h2 { color: var(--blood-red); margin-bottom: 30px; }
+        iframe { width: 100%; max-width: 850px; height: 480px; border: none; }
 
-.quote-container {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.quote-text {
-    font-family: 'Source Serif 4', serif;
-    font-size: 6rem; /* Large and bold as requested */
-    font-weight: 900;
-    text-align: center;
-    max-width: 900px;
-    color: white; /* Initial state: Solid White */
-    transition: all 0.5s ease;
-    padding: 0 20px;
-}
-
-/* --- THE INVERSION STATE (Triggered by JS) --- */
-
-.active-inversion {
-    background-color: white !important; /* Page turns white */
-}
-
-.active-inversion .quote-text {
-    /* The "Stencil" Effect */
-    background: var(--space-img) fixed center center / cover no-repeat;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent; /* Text becomes the window */
-    filter: drop-shadow(0 0 0 transparent); /* Removes any shadow for a clean cut */
-}
-
-/* Ensure the space stays fixed even inside the text */
-.active-inversion .space-bg {
-    opacity: 0; /* Hides the background so the white shows through */
-}
-
-.content-section {
-    height: 100vh;
-    background: white;
-    position: relative;
-    z-index: 10;
-}
+        footer { padding: 50px; text-align: center; background: #050505; color: #555; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-    <div class="nav-left">
-        <img src="favicon.png" alt="Vedic Asura Logo" class="nav-logo">
-        <span class="studio-name">Vedic Asura</span>
-    </div>
-    
-    <div class="nav-right">
-        <div class="social-cluster">
-            <a href="https://instagram.com/iamsudevmulloor" target="_blank" class="social-link">
-                <img src="Instagram.png" alt="Instagram" class="social-icon">
-            </a>
-            <a href="https://youtube.com/@sudevmulloorart" target="_blank" class="social-link">
-                <img src="YouTube.png" alt="YouTube" class="social-icon">
-            </a>
+        <div class="nav-left">
+            <img src="favicon.png" alt="Logo" class="nav-logo">
+            <span class="studio-name">Vedic Asura</span>
         </div>
-        
-        <a href="#" class="nav-txt">Home</a>
-        <a href="#projects" class="nav-txt">Our Projects</a>
-        <a href="#about" class="nav-txt">About Us</a>
-    </div>
-</nav>
+        <div class="nav-right">
+            <div class="social-cluster">
+                <a href="https://instagram.com/iamsudevmulloor" target="_blank" class="social-link"><img src="Instagram.png" class="social-icon"></a>
+                <a href="https://youtube.com/@sudevmulloorart" target="_blank" class="social-link"><img src="YouTube.png" class="social-icon"></a>
+            </div>
+            <a href="#" class="nav-txt">Home</a>
+            <a href="#projects" class="nav-txt">Projects</a>
+            <a href="#about" class="nav-txt">About</a>
+        </div>
+    </nav>
 
     <header>
-        <section class="inversion-wrapper" id="quote-section">
-    <div class="space-bg"></div>
-    
-    <div class="quote-container">
-        <h2 class="quote-text">Making Stories That Matter.</h2>
-    </div>
-</section>
-
-<section class="content-section">
-    <p>Studio Philosophy & Lore Content goes here...</p>
-</section>
-        <video autoplay muted loop playsinline>
-            <source src="Draegor_Teaser.mp4" type="video/mp4">
-        </video>
+        <video autoplay muted loop playsinline><source src="Draegor_Teaser.mp4" type="video/mp4"></video>
         <div class="overlay"></div>
-        
         <p class="tagline">Bringing Ancient Mythologies to Life with Realtime Filmmaking</p>
     </header>
+
+    <section class="inversion-wrapper" id="quote-section">
+        <div class="space-bg" id="parallax-bg"></div>
+        <div class="quote-container">
+            <h2 class="quote-text">Making Stories That Matter.</h2>
+        </div>
+    </section>
 
     <div class="container" id="projects">
         <div class="video-section">
             <h2>Latest Cinematic Update</h2>
-            <iframe src="https://www.youtube.com/embed/lyXFACn-nWc" frameborder="0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/lyXFACn-nWc"></iframe>
         </div>
-
         <div class="about" id="about">
-            <h2>About the Project</h2>
-            <p>Developed entirely in Unreal Engine, <strong>Draegor Bloodstone</strong> is a cinematic journey into the heart of an anti-hero. By bridging the gap between ancient Norse, Greek, and Hindu lore, this project explores the evolution of a god-like being in a high-fidelity digital world.</p>
+            <h2>Our Philosophy</h2>
+            <p>Developed in Unreal Engine 5, we bridge the gap between ancient lore and cutting-edge digital fidelity.</p>
         </div>
     </div>
 
-    <footer>
-        &copy; 2026 VEDIC ASURA STUDIOS. All Rights Reserved. Created by Sudev.
-    </footer>
-    window.addEventListener('scroll', () => {
-    const wrapper = document.getElementById('quote-section');
-    const text = document.querySelector('.quote-text');
-    const bg = document.querySelector('.space-bg');
-    
-    // 1. Logic for the 1/3rd Inversion Trigger
-    const triggerPoint = window.innerHeight / 3;
-    const textPosition = text.getBoundingClientRect().top;
+    <footer>&copy; 2026 VEDIC ASURA STUDIOS</footer>
 
-    if (textPosition < triggerPoint) {
-        wrapper.classList.add('active-inversion');
-    } else {
-        wrapper.classList.remove('active-inversion');
-    }
+    <script>
+        window.addEventListener('scroll', () => {
+            const wrapper = document.getElementById('quote-section');
+            const text = document.querySelector('.quote-text');
+            const bg = document.getElementById('parallax-bg');
+            
+            const triggerPoint = window.innerHeight / 3;
+            const rect = text.getBoundingClientRect();
 
-    // 2. Logic for the Space Parallax
-    // Moves the background image slightly as you scroll for depth
-    let scrollVal = window.scrollY;
-    bg.style.transform = `translateY(${scrollVal * 0.15}px)`; 
-});
+            // Show/Hide space background to avoid overlap with video
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                bg.style.opacity = "1";
+            } else {
+                bg.style.opacity = "0";
+            }
+
+            // The Inversion Flip
+            if (rect.top < triggerPoint) {
+                wrapper.classList.add('active-inversion');
+            } else {
+                wrapper.classList.remove('active-inversion');
+            }
+
+            // Parallax effect
+            let scrollVal = window.scrollY;
+            bg.style.transform = `translateY(${scrollVal * 0.1}px)`;
+        });
+    </script>
 </body>
 </html>
