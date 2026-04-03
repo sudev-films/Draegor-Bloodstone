@@ -63,12 +63,15 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
-       /* Container for the icons */
+        .nav-right {
+    display: flex;       /* This is the magic: it forces a horizontal row */
+    align-items: center; /* This aligns icons and text perfectly in the middle vertically */
+}
+
 .social-cluster {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    margin-right: 20px; /* Separates icons from text links */
+    display: flex;       /* This keeps the two icons side-by-side */
+    gap: 15px;           /* Space between the two icons */
+    margin-right: 30px;  /* Space between the icons and the first text link */
 }
 
 /* Initial state: Icons are smaller */
@@ -97,13 +100,13 @@
 
 /* Clean up the text links styling */
 .nav-txt {
-    color: #bbb;
+    color: #e0e0e0;
     text-decoration: none;
-    margin-left: 25px;
+    margin-left: 25px;   /* Space between individual text links */
     font-size: 0.85rem;
     text-transform: uppercase;
     font-weight: 600;
-    transition: 0.3s;
+    letter-spacing: 1px;
 }
 
 .nav-txt:hover { color: var(--gold); }
