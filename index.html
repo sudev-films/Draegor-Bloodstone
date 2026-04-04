@@ -35,7 +35,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 5%; 
+            padding: 0 5% 0 0; 
             border-bottom: 1px solid #333;
             position: fixed;
             width: 100%;
@@ -43,8 +43,8 @@
             z-index: 1000;
         }
 
-        .nav-left { display: flex; align-items: center; gap: 20px; }
-        .nav-logo { height: 50px; width: auto; display: block; }
+        .nav-left { display: flex; align-items: center; height: 100%; gap: 20px; }
+        .nav-logo { height: var(--nav-height); width: auto; display: block; object-fit: cover; }
         .studio-name { font-family: 'Eagle Lake', serif; color: var(--gold); font-size: 1.6rem; }
 
         .nav-right { display: flex; align-items: center; }
