@@ -17,24 +17,25 @@
             --nav-height: 80px;
             --gold: #FFD700;
             --blood-red: #8b0000;
-            --space-img: url('space-bg.jpg'); /* CHANGE TO .webp IF NEEDED */
+            --space-img: url('space-bg.jpg'); 
         }
 
         body { 
-            background-color: #0b0b0b; /* Global Black Background restored */
+            background-color: #0b0b0b; 
             color: #e0e0e0; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* 2. VEDIC ASURA NAVBAR - FIXED ALIGNMENT */
+        /* 2. NAVBAR STYLING (Shared between pages) */
         .navbar {
             height: var(--nav-height);
             background-color: #050505;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            /* 0 Padding on the left so logo touches the edge */
             padding: 0 5% 0 0; 
             border-bottom: 1px solid #333;
             position: fixed;
@@ -44,7 +45,14 @@
         }
 
         .nav-left { display: flex; align-items: center; height: 100%; gap: 20px; }
-        .nav-logo { height: var(--nav-height); width: auto; display: block; object-fit: cover; }
+        
+        .nav-logo { 
+            height: var(--nav-height); /* Matches bar height perfectly */
+            width: auto; 
+            display: block; 
+            object-fit: cover; 
+        }
+
         .studio-name { font-family: 'Eagle Lake', serif; color: var(--gold); font-size: 1.6rem; }
 
         .nav-right { display: flex; align-items: center; }
@@ -55,7 +63,7 @@
             align-items: center;
             margin-right: 30px;
             padding-right: 20px;
-            border-right: 1px solid #333; /* Visual separator */
+            border-right: 1px solid #333; 
         }
 
         .social-icon { width: 32px; transition: transform 0.2s; display: block; }
@@ -80,7 +88,7 @@
         }
         .nav-txt:hover { color: var(--gold); }
 
-        /* 3. CINEMATIC HEADER (VIDEO ONLY) */
+        /* 3. CINEMATIC HEADER */
         header {
             height: 100vh;
             width: 100%;
@@ -120,7 +128,7 @@
             text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8); 
         }
 
-        /* 4. INVERSION SECTION - SEPARATED FROM HEADER */
+        /* 4. INVERSION SECTION */
         .inversion-wrapper {
             position: relative;
             height: 160vh;
@@ -156,56 +164,6 @@
             transition: 0.5s ease;
         }
 
-        .lore-reveal-zone {
-            text-align: center;
-            padding-bottom: 100px;
-            margin-top: -5bvh;
-        }
-
-        .project-title-reveal {
-            font-family: 'Source Serif 4', serif;
-            font-size: 5rem;
-            font-weight: 900;
-            color: #111;
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-        }
-
-        .lore-description {
-            font-size: 1.2rem;
-    color: #555;
-    max-width: 700px;
-    margin: 0 auto 40px auto;
-    line-height: 1.8;
-}
-
-.lore-button {
-    display: inline-block;
-    padding: 18px 40px;
-    background-color: #050505;
-    color: var(--gold);
-    text-decoration: none;
-    font-weight: 700;
-    letter-spacing: 3px;
-    font-size: 0.9rem;
-    border: 1px solid #000;
-    transition: 0.4s all ease;
-}
-
-.lore-button:hover {
-    background-color: transparent;
-    color: #000;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-.section-label {
-    margin-top: 50px;
-    font-size: 0.8rem;
-    letter-spacing: 4px;
-    color: #999;
-}
-
         .active-inversion { background-color: white !important; }
         .active-inversion .quote-text {
             background: var(--space-img) fixed center center / cover no-repeat;
@@ -214,14 +172,50 @@
             color: transparent;
         }
 
-        /* 5. CONTENT SECTIONS - BACK TO BLACK BACKGROUND */
+        /* 5. CONTENT SECTIONS */
         .container { 
             padding: 100px 10%; 
-            background-color: #0b0b0b; /* Restored black background */
+            background-color: #0b0b0b; 
             position: relative;
             z-index: 10;
         }
         
+        .lore-reveal-zone { text-align: center; padding-bottom: 100px; }
+
+        .project-title-reveal {
+            font-family: 'Source Serif 4', serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: #e0e0e0; /* Kept light for black background */
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        .lore-description {
+            font-size: 1.2rem;
+            color: #aaa;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            line-height: 1.8;
+        }
+
+        .lore-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background-color: var(--gold);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            transition: 0.4s all ease;
+        }
+
+        .lore-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255,215,0,0.2);
+        }
+
         .video-section { text-align: center; margin-bottom: 80px; }
         .video-section h2 { color: var(--gold); margin-bottom: 30px; letter-spacing: 2px; }
 
@@ -230,29 +224,12 @@
             border: 1px solid #333; box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
 
-        .about h2 { color: var(--gold); margin-bottom: 25px; text-transform: uppercase; }
-        .about p { font-size: 1.15rem; color: #aaa; }
-
         footer { text-align: center; padding: 50px; color: #555; background: #050505; border-top: 1px solid #222; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <img src="favicon.png" alt="Logo" class="nav-logo">
-            <span class="studio-name">Vedic Asura</span>
-        </div>
-        <div class="nav-right">
-            <div class="social-cluster">
-                <a href="https://instagram.com/iamsudevmulloor" target="_blank" class="social-link"><img src="Instagram.png" class="social-icon"></a>
-                <a href="https://youtube.com/@sudevmulloorart" target="_blank" class="social-link"><img src="YouTube.png" class="social-icon"></a>
-            </div>
-            <a href="index.html" class="nav-txt">Home</a>
-            <a href="draegor.html" class="nav-txt">Projects</a>
-            <a href="#about" class="nav-txt">About</a>
-        </div>
-    </nav>
+    {% include navbar.html %}
 
     <header>
         <video autoplay muted loop playsinline><source src="Draegor_Teaser.mp4" type="video/mp4"></video>
@@ -274,7 +251,7 @@
                 A tapestry of intersecting dimensions, forged across a decade of narrative intent. 
                 Step beyond the screen and into the heart of the mythology.
             </p>
-            <a href="draegor-lore.html" class="lore-button">DESCEND INTO THE LORE</a>
+            <a href="draegor.html" class="lore-button">DESCEND INTO THE LORE</a>
         </div>
         
         <div class="video-section">
@@ -300,21 +277,18 @@
             const textRect = text.getBoundingClientRect();
             const wrapperRect = wrapper.getBoundingClientRect();
 
-            // Only show space stars when near the quote section
             if (wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0) {
                 bg.style.opacity = "1";
             } else {
                 bg.style.opacity = "0";
             }
 
-            // Trigger the Inversion
             if (textRect.top < triggerPoint) {
                 wrapper.classList.add('active-inversion');
             } else {
                 wrapper.classList.remove('active-inversion');
             }
 
-            // Parallax movement
             let scrollVal = window.scrollY;
             bg.style.transform = `translateY(${scrollVal * 0.12}px)`;
         });
