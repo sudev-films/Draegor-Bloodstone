@@ -370,80 +370,112 @@ permalink: /
 <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. SETUP THE SCENE
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('webgl-canvas').appendChild(renderer.domElement);
 
-    // 2. LIGHTING (Cinematic Rim Lighting for Stone)
-    const light = new THREE.DirectionalLight(0xffffff, 1.5);
-    light.position.set(5, 5, 5);
-    scene.add(light);
-    const ambient = new THREE.AmbientLight(0x404040, 0.5); 
-    scene.add(ambient);
+    // 1. LIGHTING (Cinematic "Dramatization")
+    const light1 = new THREE.PointLight(0xffd700, 2, 50); // Gold tint
+    light1.position.set(10, 10, 10);
+    scene.add(light1);
+    
+    const light2 = new THREE.PointLight(0xffffff, 1, 50);
+    light2.position.set(-10, -10, 10);
+    scene.add(light2);
 
-    // 3. CREATE THE SHARDS (Placeholders for weathered stone)
     const fragments = [];
-    const shardCount = 40; // Total fragments for the title
-    const stoneMaterial = new THREE.MeshStandardMaterial({ 
-        color: 0x222222, 
-        roughness: 0.9, 
-        metalness: 0.1 
+    const fontLoader = new THREE.FontLoader();
+
+    // 2. LOADING THE 3D TEXT
+    // We use a high-end Serif font for that "Ancient Lore" look
+    fontLoader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', function(font) {
+        
+        const textOptions = {
+            font: font,
+            size: 1.5,
+            height: 0.5,
+            curveSegments: 4,
+            bevelEnabled: true,
+            bevelThickness: 0.1,
+            bevelSize: 0.1,
+        };
+
+        // Create "DRAEGOR"
+        const geo = new THREE.TextGeometry('DRAEGOR', textOptions);
+        geo.center();
+
+        // THE "WEATHERED STONE" MATERIAL
+        const stoneMaterial = new THREE.MeshStandardMaterial({ 
+            color: 0x111111, 
+            roughness: 0.9, 
+            metalness: 0.1,
+            flatShading: true // Makes it look "Chiseled/Rock-like"
+        });
+
+        // 3. SHATTERING THE TEXT
+        // Instead of one big mesh, we create shards based on the text geometry
+        for (let i = 0; i < 60; i++) {
+            const shardGeo = new THREE.BoxGeometry(0.3, 0.3, 0.3);
+            const shard = new THREE.Mesh(shardGeo, stoneMaterial);
+            
+            // Random Chaos Start Positions
+            shard.position.set(Math.random() * 20 - 10, Math.random() * 20 - 10, Math.random() * -15);
+            shard.rotation.set(Math.random() * 10, Math.random() * 10, Math.random() * 10);
+            
+            // "Home" Positions (Where they should land)
+            // We sample points from the actual text geometry
+            const targetPos = new THREE.Vector3();
+            targetPos.fromBufferAttribute(geo.attributes.position, Math.floor(Math.random() * geo.attributes.position.count));
+
+            shard.userData.targetPos = targetPos;
+            shard.userData.targetRot = new THREE.Vector3(0, 0, 0);
+
+            scene.add(shard);
+            fragments.push(shard);
+        }
     });
 
-    for (let i = 0; i < shardCount; i++) {
-        // Random "Weathered" Geometries
-        const geometry = new THREE.BoxGeometry(Math.random() * 0.5 + 0.2, Math.random() * 0.8 + 0.2, 0.2);
-        const shard = new THREE.Mesh(geometry, stoneMaterial);
-        
-        // Initial Chaotic State
-        shard.position.set(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * -10);
-        shard.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-        
-        scene.add(shard);
-        fragments.push(shard);
-    }
+    camera.position.z = 8;
 
-    camera.position.z = 5;
-
-    // 4. THE ANAMORPHIC SCROLL TRIGGER
+    // 4. THE PINNED ANIMATION LOGIC
     gsap.to({}, {
         scrollTrigger: {
             trigger: "#three-container",
             start: "top top",
             end: "bottom bottom",
-            scrub: 1.5, // Smooths out the "Hand-to-Engine" movement
+            scrub: 2, // The "Scrub" makes the stones feel heavy and laggy
             onUpdate: (self) => {
-                const progress = self.progress; // 0 to 1
+                const p = self.progress;
 
-                fragments.forEach((shard, i) => {
-                    // Logic: Map progress to target "D-R-A-E-G-O-R" positions
-                    // For now, we simulate them snapping to a central point
-                    shard.rotation.x *= (1 - progress);
-                    shard.rotation.y *= (1 - progress);
-                    shard.position.z = -10 * (1 - progress);
+                fragments.forEach((shard) => {
+                    // Linear Interpolation (Lerp) from Chaos to Order
+                    shard.position.x = THREE.MathUtils.lerp(shard.position.x, shard.userData.targetPos.x, p * 0.1);
+                    shard.position.y = THREE.MathUtils.lerp(shard.position.y, shard.userData.targetPos.y, p * 0.1);
+                    shard.position.z = THREE.MathUtils.lerp(shard.position.z, shard.userData.targetPos.z, p * 0.1);
+                    
+                    shard.rotation.x = THREE.MathUtils.lerp(shard.rotation.x, 0, p * 0.1);
+                    shard.rotation.y = THREE.MathUtils.lerp(shard.rotation.y, 0, p * 0.1);
                 });
 
-                // Show the Lore Button when progress > 90%
-                if (progress > 0.9) {
-                    document.getElementById('lore-cta').classList.add('visible');
+                // Dramatic Reveal of the Button
+                const cta = document.getElementById('lore-cta');
+                if (p > 0.85) {
+                    cta.classList.add('visible');
                 } else {
-                    document.getElementById('lore-cta').classList.remove('visible');
+                    cta.classList.remove('visible');
                 }
             }
         }
     });
 
-    // 5. RENDER LOOP
     function animate() {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
     }
     animate();
 
-    // Handle Resize
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
