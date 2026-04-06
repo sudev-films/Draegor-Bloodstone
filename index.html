@@ -162,10 +162,13 @@ permalink: /
             text-align: center;
             color: white;
             max-width: 1200px;
-            line-height: 1.05;
+            line-height: 1.15;
+            padding-bottom: 0.2em;
+            padding-top: 0.1em;
             letter-spacing: -2px;
             text-transform: none;
             transition: 0.5s ease;
+            display: inline-block;
         }
 
         .active-inversion { background-color: white !important; }
@@ -290,7 +293,7 @@ permalink: /
             const text = document.querySelector('.quote-text');
             const bg = document.getElementById('parallax-bg');
             
-            const triggerPoint = window.innerHeight * 0.41;
+            const triggerPoint = window.innerHeight * 0.48;
             const textRect = text.getBoundingClientRect();
             const wrapperRect = wrapper.getBoundingClientRect();
 
