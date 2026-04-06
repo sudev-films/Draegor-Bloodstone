@@ -1,1 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lore | Draegor Bloodstone</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Source+Serif+4:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
 
+    <style>
+        /* 1. RESET & SHARED NAVBAR STYLES */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --nav-height: 80px;
+            --gold: #FFD700;
+        }
+
+        body { 
+            background-color: #0b0b0b; 
+            color: #e0e0e0; 
+            font-family: 'Segoe UI', sans-serif; 
+            line-height: 1.6;
+        }
+
+        /* Copy-pasted Navbar CSS from Index to ensure it looks the same */
+        .navbar {
+            height: var(--nav-height);
+            background-color: #050505;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5% 0 0; 
+            border-bottom: 1px solid #333;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-left { display: flex; align-items: center; height: 100%; gap: 20px; }
+        .nav-logo { height: var(--nav-height); width: auto; display: block; object-fit: cover; }
+        .studio-name { font-family: 'Eagle Lake', serif; color: var(--gold); font-size: 1.6rem; }
+        .nav-right { display: flex; align-items: center; }
+        .social-cluster { display: flex; gap: 15px; align-items: center; margin-right: 30px; padding-right: 20px; border-right: 1px solid #333; }
+        .social-icon { width: 32px; transition: 0.2s; }
+        .nav-txt { color: #e0e0e0; text-decoration: none; margin-left: 25px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; }
+
+        /* 2. DRAEGOR PAGE CONTENT STYLING */
+        .lore-header {
+            margin-top: var(--nav-height);
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0), #0b0b0b), url('draegor-hero.jpg'); /* Placeholder for your character render */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .lore-container {
+            padding: 100px 10%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1.lore-title {
+            font-family: 'Source Serif 4', serif;
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    {% include navbar.html %}
+
+    <header class="lore-header">
+        <h1 class="lore-title">The Chronicles</h1>
+    </header>
+
+    <main class="lore-container">
+        <h2>Chapter I: The Intersection</h2>
+        <p>Your epic lore about Norse, Greek, and Hindu mythologies starts here...</p>
+    </main>
+
+    <footer>
+        <center style="padding: 50px; color: #555;">&copy; 2026 VEDIC ASURA STUDIOS</center>
+    </footer>
+
+</body>
+</html>
