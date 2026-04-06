@@ -223,6 +223,45 @@ permalink: /
             box-shadow: 0 10px 20px rgba(255,215,0,0.2);
         }
 
+        .3d-pin-wrapper {
+    height: 300vh; /* The "Duration" of the animation */
+    background: #000;
+    position: relative;
+}
+
+.sticky-viewport {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#webgl-canvas {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+.post-reveal-content {
+    position: absolute;
+    bottom: 10%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease;
+    pointer-events: none;
+}
+
+/* Triggered when alignment is 100% */
+.post-reveal-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
         .video-section { text-align: center; margin-bottom: 80px; }
         .video-section h2 { color: var(--gold); margin-bottom: 30px; letter-spacing: 2px; }
 
@@ -263,6 +302,16 @@ permalink: /
             </h2>
         </div>
     </section>
+
+    <section class="3d-pin-wrapper" id="three-container">
+    <div class="sticky-viewport">
+        <div id="webgl-canvas"></div>
+        
+        <div class="post-reveal-content" id="lore-cta">
+             <a href="/Draegor-Bloodstone/draegor/" class="lore-button">DESCEND INTO THE LORE</a>
+        </div>
+    </div>
+</section>
 
     <div class="container" id="projects">
         <div class="lore-reveal-zone">
@@ -313,5 +362,93 @@ permalink: /
             bg.style.transform = `translateY(${scrollVal * 0.12}px)`;
         });
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. SETUP THE SCENE
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('webgl-canvas').appendChild(renderer.domElement);
+
+    // 2. LIGHTING (Cinematic Rim Lighting for Stone)
+    const light = new THREE.DirectionalLight(0xffffff, 1.5);
+    light.position.set(5, 5, 5);
+    scene.add(light);
+    const ambient = new THREE.AmbientLight(0x404040, 0.5); 
+    scene.add(ambient);
+
+    // 3. CREATE THE SHARDS (Placeholders for weathered stone)
+    const fragments = [];
+    const shardCount = 40; // Total fragments for the title
+    const stoneMaterial = new THREE.MeshStandardMaterial({ 
+        color: 0x222222, 
+        roughness: 0.9, 
+        metalness: 0.1 
+    });
+
+    for (let i = 0; i < shardCount; i++) {
+        // Random "Weathered" Geometries
+        const geometry = new THREE.BoxGeometry(Math.random() * 0.5 + 0.2, Math.random() * 0.8 + 0.2, 0.2);
+        const shard = new THREE.Mesh(geometry, stoneMaterial);
+        
+        // Initial Chaotic State
+        shard.position.set(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * -10);
+        shard.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+        
+        scene.add(shard);
+        fragments.push(shard);
+    }
+
+    camera.position.z = 5;
+
+    // 4. THE ANAMORPHIC SCROLL TRIGGER
+    gsap.to({}, {
+        scrollTrigger: {
+            trigger: "#three-container",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.5, // Smooths out the "Hand-to-Engine" movement
+            onUpdate: (self) => {
+                const progress = self.progress; // 0 to 1
+
+                fragments.forEach((shard, i) => {
+                    // Logic: Map progress to target "D-R-A-E-G-O-R" positions
+                    // For now, we simulate them snapping to a central point
+                    shard.rotation.x *= (1 - progress);
+                    shard.rotation.y *= (1 - progress);
+                    shard.position.z = -10 * (1 - progress);
+                });
+
+                // Show the Lore Button when progress > 90%
+                if (progress > 0.9) {
+                    document.getElementById('lore-cta').classList.add('visible');
+                } else {
+                    document.getElementById('lore-cta').classList.remove('visible');
+                }
+            }
+        }
+    });
+
+    // 5. RENDER LOOP
+    function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // Handle Resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
 </body>
 </html>
