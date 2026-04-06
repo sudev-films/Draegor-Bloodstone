@@ -104,6 +104,12 @@ permalink: /
             padding-bottom: 16vh;
         }
 
+        header, .inversion-wrapper, .video-pin-wrapper {
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
         header video {
             position: absolute;
             top: 50%; left: 50%;
@@ -137,12 +143,13 @@ permalink: /
             height: 160vh;
             background-color: transparent;
             transition: background-color 0.6s ease;
+            overflow: hidden;
         }
 
         .space-bg {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: -10%; left: 0;
+            width: 100%; height: 130%;
             background: var(--space-img) center center / cover no-repeat;
             z-index: -5;
             opacity: 1;
@@ -331,29 +338,29 @@ permalink: /
 
     <script>
         window.addEventListener('scroll', () => {
-            const wrapper = document.getElementById('quote-section');
-            const text = document.querySelector('.quote-text');
-            const bg = document.getElementById('parallax-bg');
-            
-            const triggerPoint = window.innerHeight * 0.35;
-            const textRect = text.getBoundingClientRect();
-            const wrapperRect = wrapper.getBoundingClientRect();
+    const wrapper = document.getElementById('quote-section');
+    const bg = document.getElementById('parallax-bg');
+    const text = document.querySelector('.quote-text');
+    
+    // Get the position of the section relative to the viewport
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const triggerPoint = window.innerHeight * 0.41;
 
-            if (wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0) {
-                bg.style.opacity = "1";
-            } else {
-                bg.style.opacity = "0";
-            }
+    // 1. PARALLAX LOGIC (Only runs when section is visible)
+    if (wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0) {
+        // Calculate how much of the section has been scrolled
+        // This ensures the image movement is relative to the section start
+        let relativeScroll = window.innerHeight - wrapperRect.top;
+        bg.style.transform = `translateY(${relativeScroll * 0.15}px)`;
+    }
 
-            if (textRect.top < triggerPoint) {
-                wrapper.classList.add('active-inversion');
-            } else {
-                wrapper.classList.remove('active-inversion');
-            }
-
-            let scrollVal = window.scrollY;
-            bg.style.transform = `translateY(${scrollVal * 0.12}px)`;
-        });
+    // 2. INVERSION TRIGGER
+    if (wrapperRect.top + (window.innerHeight * 0.5) < window.innerHeight) {
+        wrapper.classList.add('active-inversion');
+    } else {
+        wrapper.classList.remove('active-inversion');
+    }
+});
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
