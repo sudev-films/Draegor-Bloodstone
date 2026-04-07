@@ -40,7 +40,7 @@ permalink: /
             align-items: center;
             padding: 0 5% 0 0; 
             border-bottom: 1px solid #333;
-            position: fixed;
+            position: absolute;
             width: 100%;
             top: 0;
             z-index: 100;
@@ -109,6 +109,21 @@ permalink: /
             padding: 0.1em 0 0.2em; letter-spacing: -2px; transition: 0.5s ease;
         }
 
+        .lore-button {
+            display: inline-block !important;
+            padding: 18px 40px;
+            background-color: var(--gold) !important;
+            color: #000 !important;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: 0.4s all ease;
+            border: none;
+        }
+
+        .active-inversion .space-bg {opacity: 0; transition: opacity 0.4s ease;}
         .active-inversion { background-color: white !important; }
         .active-inversion .quote-text {
             background: var(--space-img) fixed center center / cover no-repeat;
@@ -184,10 +199,10 @@ permalink: /
             trigger: "#quote-section",
             pin: true,
             start: "top top",
-            end: "+=50%", // How much extra "hold" time they have (approx half a screen)
+            end: "+=70%", // How much extra "hold" time they have (approx half a screen)
             onUpdate: (self) => {
                 // Flash white once they've scrolled 20% into the hold
-                if (self.progress > 0.2) {
+                if (self.progress > 0.1) {
                     document.getElementById('quote-section').classList.add('active-inversion');
                 } else {
                     document.getElementById('quote-section').classList.remove('active-inversion');
@@ -197,7 +212,7 @@ permalink: /
 
         // 4. FIXED PARALLAX: Anchored specifically to the quote section
         gsap.to("#parallax-bg", {
-            y: "15%",
+            y: "20%",
             scrollTrigger: {
                 trigger: "#quote-section",
                 start: "top bottom",
@@ -209,14 +224,15 @@ permalink: /
         const vid = document.getElementById("titleVideo");
         ScrollTrigger.create({
             trigger: "#projects",
+            pin: true,
             start: "top top",
-            end: "bottom bottom",
+            end: "+=300%",
             scrub: true,
             onUpdate: (self) => {
                 if (vid.duration) {
                     vid.currentTime = vid.duration * self.progress;
                 }
-                if (self.progress > 0.95) {
+                if (self.progress > 0.9) {
                     document.getElementById('lore-cta').classList.add('visible');
                 } else {
                     document.getElementById('lore-cta').classList.remove('visible');
