@@ -19,7 +19,6 @@ permalink: /
         :root {
             --nav-height: 80px;
             --gold: #FFD700;
-            --blood-red: #8b0000;
             --space-img: url('space-bg.jpg'); 
         }
 
@@ -44,7 +43,7 @@ permalink: /
             position: fixed;
             width: 100%;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
         }
 
         .nav-left { display: flex; align-items: center; height: 100%; gap: 20px; }
@@ -99,12 +98,6 @@ permalink: /
             overflow: hidden;
             align-items: center; 
         }
-
-        header, .inversion-wrapper, .video-pin-wrapper {
-    margin: 0;
-    padding: 0;
-    display: block;
-}
 
         header video {
             position: absolute;
@@ -291,7 +284,7 @@ permalink: /
     {% include navbar.html %}
 
     <header>
-        <video autoplay muted loop playsinline><source src="Draegor_Teaser.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline>preload="metadata"<source src="Draegor_Teaser.mp4" type="video/mp4"></video>
         <div class="overlay"></div>
         <p class="tagline">Bringing Ancient Mythologies to Life<br>
             with Realtime Filmmaking
@@ -346,28 +339,12 @@ permalink: /
     <footer>&copy; 2026 VEDIC ASURA STUDIOS. Created by Sudev.</footer>
 
     <script>
-        window.addEventListener('scroll', () => {
-    const wrapper = document.getElementById('quote-section');
-    const bg = document.getElementById('parallax-bg');
-    const text = document.querySelector('.quote-text');
-    
-    // Get the position of the section relative to the viewport
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const triggerPoint = window.innerHeight * 0.41;
-
-    // 1. PARALLAX LOGIC (Only runs when section is visible)
-    if (wrapperRect.top < window.innerHeight && wrapperRect.bottom > 0) {
-        // Calculate how much of the section has been scrolled
-        // This ensures the image movement is relative to the section start
-        let relativeScroll = window.innerHeight - wrapperRect.top;
-        bg.style.transform = `translateY(${relativeScroll * 0.15}px)`;
-    }
-
-    // 2. INVERSION TRIGGER
-    if (wrapperRect.top + (window.innerHeight * 0.5) < window.innerHeight) {
-        wrapper.classList.add('active-inversion');
-    } else {
-        wrapper.classList.remove('active-inversion');
+        gsap.to(".inversion-wrapper", {
+    scrollTrigger: {
+        trigger: "#quote-section",
+        start: "top 41%", // Your magic 41% trigger point
+        onEnter: () => document.getElementById('quote-section').classList.add('active-inversion'),
+        onLeaveBack: () => document.getElementById('quote-section').classList.remove('active-inversion'),
     }
 });
     </script>
