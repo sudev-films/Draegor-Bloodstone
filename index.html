@@ -12,8 +12,11 @@ permalink: /
     <link rel="icon" type="image/png" href="/Draegor-Bloodstone/favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <style>
-        /* 1. RESET & BASE STYLES */
+        /* RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
@@ -30,44 +33,31 @@ permalink: /
             overflow-x: hidden;
         }
 
-        /* 2. NAVBAR STYLING (Shared between pages) */
+        /* NAVBAR */
         .navbar {
             height: var(--nav-height);
             background-color: #050505;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /* 0 Padding on the left so logo touches the edge */
             padding: 0 5% 0 0; 
             border-bottom: 1px solid #333;
             position: fixed;
             width: 100%;
             top: 0;
-            z-index: 100;
+            z-index: 100; /* Highest Layer */
         }
 
         .nav-left { display: flex; align-items: center; height: 100%; gap: 20px; }
-        
-        .nav-logo { 
-            height: var(--nav-height); /* Matches bar height perfectly */
-            width: auto; 
-            display: block; 
-            object-fit: cover; 
-        }
-
+        .nav-logo { height: var(--nav-height); width: auto; display: block; object-fit: cover; }
         .studio-name { font-family: 'Eagle Lake', serif; color: var(--gold); font-size: 1.6rem; }
 
         .nav-right { display: flex; align-items: center; }
-
         .social-cluster {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-right: 30px;
-            padding-right: 20px;
+            display: flex; gap: 15px; align-items: center;
+            margin-right: 30px; padding-right: 20px;
             border-right: 1px solid #333; 
         }
-
         .social-icon { width: 32px; transition: transform 0.2s; display: block; }
         .social-link:hover .social-icon { transform: scale(1.3); animation: vibrate 0.1s linear infinite; }
 
@@ -79,24 +69,19 @@ permalink: /
         }
 
         .nav-txt {
-            color: #e0e0e0;
-            text-decoration: none;
-            margin-left: 25px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 1px;
-            transition: 0.3s;
+            color: #e0e0e0; text-decoration: none;
+            margin-left: 25px; font-size: 0.85rem;
+            text-transform: uppercase; font-weight: 600;
+            letter-spacing: 1px; transition: 0.3s;
         }
         .nav-txt:hover { color: var(--gold); }
 
-        /* 3. CINEMATIC HEADER */
+        /* HEADER */
         header {
             height: 100vh;
             width: 100%;
             position: relative;
             overflow: hidden;
-            align-items: center; 
         }
 
         header video {
@@ -112,19 +97,15 @@ permalink: /
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(to bottom,
-                                        rgba(0,0,0,0.4) 0%,
-                                        transparent 40%
-                                        transparent 60%
-                                        rgba(0,0,0,0.7) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.7) 100%);
             pointer-events: none;
+            z-index: 1;
         }
         
         .tagline { 
             position: absolute;
-            top: 75%; left:50%;
+            top: 65%; left:50%; /* Adjusted slightly for better "Character Frame" */
             transform: translate(-50%, -50%);
-
             width: 90%;
             font-family: 'Source Serif 4', serif;
             font-size: 3.8rem;
@@ -132,12 +113,12 @@ permalink: /
             color: white; 
             line-height: 1.2;
             text-align: center;
-            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8), 0px 0px 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8), 2px 2px 10px rgba(0, 0, 0, 0.5);
             margin: 0;
             z-index: 10;
         }
 
-        /* 4. INVERSION SECTION */
+        /* INVERSION SECTION */
         .inversion-wrapper {
             position: relative;
             height: 160vh;
@@ -152,7 +133,6 @@ permalink: /
             width: 100%; height: 130%;
             background: var(--space-img) center center / cover no-repeat;
             z-index: -5;
-            opacity: 1;
         }
 
         .quote-container {
@@ -169,10 +149,8 @@ permalink: /
             color: white;
             max-width: 1200px;
             line-height: 1.15;
-            padding-bottom: 0.2em;
-            padding-top: 0.1em;
+            padding: 0.1em 0 0.2em;
             letter-spacing: -2px;
-            text-transform: none;
             transition: 0.5s ease;
             display: inline-block;
         }
@@ -185,7 +163,35 @@ permalink: /
             color: transparent;
         }
 
-        /* 5. CONTENT SECTIONS */
+        /* VIDEO TITLE REVEAL */
+        .video-pin-wrapper {
+            height: 400vh;
+            background: #000;
+            position: relative;
+        }
+
+        .sticky-viewport {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        #titleVideo { width: 100%; max-width: 1200px; height: auto; }
+
+        .post-reveal-content {
+            position: absolute;
+            bottom: 15%;
+            opacity: 0;
+            transition: 1s ease;
+            text-align: center;
+        }
+        .post-reveal-content.visible { opacity: 1; }
+
+        /* CONTENT */
         .container { 
             padding: 100px 10%; 
             background-color: #0b0b0b; 
@@ -194,23 +200,8 @@ permalink: /
         }
         
         .lore-reveal-zone { text-align: center; padding-bottom: 100px; }
-
-        .project-title-reveal {
-            font-family: 'Source Serif 4', serif;
-            font-size: 5rem;
-            font-weight: 900;
-            color: #e0e0e0; /* Kept light for black background */
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-        }
-
-        .lore-description {
-            font-size: 1.2rem;
-            color: #aaa;
-            max-width: 700px;
-            margin: 0 auto 40px auto;
-            line-height: 1.8;
-        }
+        .project-title-reveal { font-family: 'Source Serif 4', serif; font-size: 5rem; font-weight: 900; color: #e0e0e0; letter-spacing: 5px; margin-bottom: 20px; }
+        .lore-description { font-size: 1.2rem; color: #aaa; max-width: 700px; margin: 0 auto 40px auto; line-height: 1.8; }
 
         .lore-button {
             display: inline-block;
@@ -223,60 +214,15 @@ permalink: /
             font-size: 0.9rem;
             transition: 0.4s all ease;
         }
-
-        .lore-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(255,215,0,0.2);
-        }
-
-        .video-pin-wrapper {
-        height: 400vh; /* Length of the scroll animation */
-        background: #000;
-        position: relative;
-    }
-
-    .sticky-viewport {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #000;
-    }
-
-    #titleVideo {
-        width: 100%;
-        max-width: 1200px; /* Adjust based on your render size */
-        height: auto;
-    }
-
-    .post-reveal-content {
-        position: absolute;
-        bottom: 15%;
-        opacity: 0;
-        transition: 1s ease;
-    }
-
-    .post-reveal-content.visible { opacity: 1; }
+        .lore-button:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,215,0,0.2); }
 
         .video-section { text-align: center; margin-bottom: 80px; }
         .video-section h2 { color: var(--gold); margin-bottom: 30px; letter-spacing: 2px; }
-
-        iframe { 
-            width: 100%; max-width: 850px; height: 480px; 
-            border: 1px solid #333; box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
+        iframe { width: 100%; max-width: 850px; height: 480px; border: 1px solid #333; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
 
         footer { text-align: center; padding: 50px; color: #555; background: #050505; border-top: 1px solid #222; }
 
-        @media (max-width: 768px) {
-            .quote-text {
-                font-size: 2.8rem;
-                line-height: 1.1;
-            }
-        }
-        
+        @media (max-width: 768px) { .quote-text { font-size: 2.8rem; } .tagline { font-size: 2.2rem; } }
     </style>
 </head>
 <body>
@@ -284,44 +230,35 @@ permalink: /
     {% include navbar.html %}
 
     <header>
-        <video autoplay muted loop playsinline>preload="metadata"<source src="Draegor_Teaser.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline preload="metadata">
+            <source src="Draegor_Teaser.mp4" type="video/mp4">
+        </video>
         <div class="overlay"></div>
-        <p class="tagline">Bringing Ancient Mythologies to Life<br>
-            with Realtime Filmmaking
-        </p>
+        <p class="tagline">Bringing Ancient Mythologies to Life<br>with Realtime Filmmaking</p>
     </header>
 
     <section class="inversion-wrapper" id="quote-section">
         <div class="space-bg" id="parallax-bg"></div>
         <div class="quote-container">
-            <h2 class="quote-text">
-                Through Years of<br>
-                Artistic Devotion and<br>
-                Technical Mastery,<br>
-                We Bring You...
-            </h2>
+            <h2 class="quote-text">Through Years of<br>Artistic Devotion and<br>Technical Mastery,<br>We Bring You...</h2>
         </div>
     </section>
 
-   <section class="video-pin-wrapper" id="video-section">
-    <div class="sticky-viewport">
-        <video id="titleVideo" playsinline muted preload="auto">
-            <source src="title-reveal.mp4" type="video/mp4">
-        </video>
-        
-        <div class="post-reveal-content" id="lore-cta">
-             <a href="/Draegor-Bloodstone/draegor/" class="lore-button">DESCEND INTO THE LORE</a>
+    <section class="video-pin-wrapper" id="projects">
+        <div class="sticky-viewport">
+            <video id="titleVideo" playsinline muted preload="auto">
+                <source src="title-reveal.mp4" type="video/mp4">
+            </video>
+            <div class="post-reveal-content" id="lore-cta">
+                 <a href="/Draegor-Bloodstone/draegor/" class="lore-button">DESCEND INTO THE LORE</a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-    <div class="container" id="projects">
+    <div class="container">
         <div class="lore-reveal-zone">
             <h1 class="project-title-reveal">DRAEGOR BLOODSTONE</h1>
-            <p class="lore-description">
-                A tapestry of intersecting dimensions, forged across a decade of narrative intent. 
-                Step beyond the screen and into the heart of the mythology.
-            </p>
+            <p class="lore-description">A tapestry of intersecting dimensions, forged across a decade of narrative intent.</p>
             <a href="/Draegor-Bloodstone/draegor/" class="lore-button">DESCEND INTO THE LORE</a>
         </div>
         
@@ -339,44 +276,46 @@ permalink: /
     <footer>&copy; 2026 VEDIC ASURA STUDIOS. Created by Sudev.</footer>
 
     <script>
-        gsap.to(".inversion-wrapper", {
-    scrollTrigger: {
-        trigger: "#quote-section",
-        start: "top 41%", // Your magic 41% trigger point
-        onEnter: () => document.getElementById('quote-section').classList.add('active-inversion'),
-        onLeaveBack: () => document.getElementById('quote-section').classList.remove('active-inversion'),
-    }
-});
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. COMBINED PARALLAX + INVERSION LOGIC (Optimized)
+        gsap.to("#parallax-bg", {
+            y: "20%", // Creates the drift effect
+            scrollTrigger: {
+                trigger: "#quote-section",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        gsap.to("#quote-section", {
+            scrollTrigger: {
+                trigger: "#quote-section",
+                start: "top 41%", // The inversion threshold
+                onEnter: () => document.getElementById('quote-section').classList.add('active-inversion'),
+                onLeaveBack: () => document.getElementById('quote-section').classList.remove('active-inversion'),
+            }
+        });
+
+        // 2. VIDEO SCROLL LOGIC
+        const vid = document.getElementById("titleVideo");
+        ScrollTrigger.create({
+            trigger: "#projects",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true,
+            onUpdate: (self) => {
+                if (vid.duration) {
+                    vid.currentTime = vid.duration * self.progress;
+                }
+                if (self.progress > 0.95) {
+                    document.getElementById('lore-cta').classList.add('visible');
+                } else {
+                    document.getElementById('lore-cta').classList.remove('visible');
+                }
+            }
+        });
     </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-<script>
-    gsap.registerPlugin(ScrollTrigger);
-
-    const video = document.getElementById("titleVideo");
-
-    // This links the video frames to the scroll distance
-    ScrollTrigger.create({
-        trigger: "#video-section",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-        onUpdate: (self) => {
-            if (video.duration) {
-                // Map scroll progress (0-1) to video duration
-                video.currentTime = video.duration * self.progress;
-            }
-            
-            // Show button at the very end
-            if (self.progress > 0.95) {
-                document.getElementById('lore-cta').classList.add('visible');
-            } else {
-                document.getElementById('lore-cta').classList.remove('visible');
-            }
-        }
-    });
-</script>
 </body>
 </html>
