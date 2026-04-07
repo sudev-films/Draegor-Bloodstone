@@ -292,7 +292,7 @@ permalink: /
         gsap.to("#quote-section", {
             scrollTrigger: {
                 trigger: "#quote-section",
-                start: "top 55%", // The inversion threshold
+                start: "center center", // The inversion threshold
                 onEnter: () => document.getElementById('quote-section').classList.add('active-inversion'),
                 onLeaveBack: () => document.getElementById('quote-section').classList.remove('active-inversion'),
             }
