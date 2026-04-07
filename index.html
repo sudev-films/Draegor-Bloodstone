@@ -84,8 +84,8 @@ permalink: /
         .inversion-wrapper {
             position: relative;
             height: 100vh; /* Exactly one screen height */
-            background-color: transparent;
-            transition: background-color 0.6s ease;
+            background-color: #000;
+            transition: background-color 1.2s ease;
             overflow: hidden;
         }
 
@@ -96,6 +96,7 @@ permalink: /
             width: 100%; height: 180%; 
             background: var(--space-img) center center / cover no-repeat;
             z-index: -5;
+            transition: opacity 1.2s ease;
         }
 
         .quote-container {
@@ -123,8 +124,8 @@ permalink: /
             border: none;
         }
 
-        .active-inversion .space-bg {opacity: 0; transition: opacity 0.4s ease;}
-        .active-inversion { background-color: white !important; }
+        .active-inversion .space-bg {opacity: 0; }
+        .active-inversion { background-color: #fff !important; }
         .active-inversion .quote-text {
             background: var(--space-img) fixed center center / cover no-repeat;
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -134,8 +135,8 @@ permalink: /
         .video-pin-wrapper { height: 400vh; background: #000; position: relative; }
         .sticky-viewport { position: sticky; top: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
         #titleVideo { width: 100%; max-width: 1200px; height: auto; }
-        .post-reveal-content { position: absolute; bottom: 15%; opacity: 0; transition: 1s ease; text-align: center; }
-        .post-reveal-content.visible { opacity: 1; }
+        .post-reveal-content { position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); opacity: 0; visibility: hidden; transition: opacity 0.8s ease, transform 0.8s ease; text-align: center; z-index: 20;}
+        .post-reveal-content.visible { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-10%);}
 
         .container { padding: 100px 10%; background-color: #0b0b0b; position: relative; z-index: 10; }
         .video-section { text-align: center; margin-bottom: 80px; }
@@ -199,10 +200,10 @@ permalink: /
             trigger: "#quote-section",
             pin: true,
             start: "top top",
-            end: "+=70%", // How much extra "hold" time they have (approx half a screen)
+            end: "+=100%", // How much extra "hold" time they have (approx half a screen)
             onUpdate: (self) => {
                 // Flash white once they've scrolled 20% into the hold
-                if (self.progress > 0.1) {
+                if (self.progress > 0.3) {
                     document.getElementById('quote-section').classList.add('active-inversion');
                 } else {
                     document.getElementById('quote-section').classList.remove('active-inversion');
@@ -212,7 +213,7 @@ permalink: /
 
         // 4. FIXED PARALLAX: Anchored specifically to the quote section
         gsap.to("#parallax-bg", {
-            y: "20%",
+            y: "15%",
             scrollTrigger: {
                 trigger: "#quote-section",
                 start: "top bottom",
@@ -227,15 +228,17 @@ permalink: /
             pin: true,
             start: "top top",
             end: "+=300%",
-            scrub: true,
+            scrub: 1,
             onUpdate: (self) => {
                 if (vid.duration) {
                     vid.currentTime = vid.duration * self.progress;
                 }
-                if (self.progress > 0.9) {
-                    document.getElementById('lore-cta').classList.add('visible');
+
+                const cta = document.getElementById('lore-octa');
+                if (self.progress > 0.85) {
+                    cta.classList.add('visible');
                 } else {
-                    document.getElementById('lore-cta').classList.remove('visible');
+                    cta.classList.remove('visible');
                 }
             }
         });
