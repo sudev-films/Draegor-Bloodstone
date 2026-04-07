@@ -80,22 +80,21 @@ permalink: /
             margin: 0; z-index: 10;
         }
 
-        /* 1. FIXED INVERSION: Reduced height to remove that "Dead Space" */
         .inversion-wrapper {
             position: relative;
-            height: 100vh; /* Exactly one screen height */
-            background-color: #000;
+            height: 100vh;
+            background-color: #0b0b0b; /* Match body for seamless load */
             transition: background-color 1.2s ease;
             overflow: hidden;
         }
 
-        /* 2. FIXED SPACE DRIFT: Added massive top overhang to stop the black gap */
         .space-bg {
             position: absolute;
             top: -40%; left: 0;
             width: 100%; height: 180%; 
             background: var(--space-img) center center / cover no-repeat;
             z-index: -5;
+            opacity: 1; /* FORCED VISIBILITY ON LOAD */
             transition: opacity 1.2s ease;
         }
 
@@ -124,7 +123,7 @@ permalink: /
             border: none;
         }
 
-        .active-inversion .space-bg {opacity: 0; }
+        .active-inversion .space-bg { opacity: 0; }
         .active-inversion { background-color: #fff !important; }
         .active-inversion .quote-text {
             background: var(--space-img) fixed center center / cover no-repeat;
@@ -135,8 +134,25 @@ permalink: /
         .video-pin-wrapper { height: 400vh; background: #000; position: relative; }
         .sticky-viewport { position: sticky; top: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
         #titleVideo { width: 100%; max-width: 1200px; height: auto; }
-        .post-reveal-content { position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); opacity: 0; visibility: hidden; transition: opacity 0.8s ease, transform 0.8s ease; text-align: center; z-index: 20;}
-        .post-reveal-content.visible { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(-10%);}
+        
+        .post-reveal-content { 
+            position: absolute; 
+            bottom: 20%; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.8s ease, transform 0.8s ease; 
+            text-align: center; 
+            z-index: 20;
+        }
+        
+        /* The button now gently lifts into place and stays */
+        .post-reveal-content.visible { 
+            opacity: 1; 
+            visibility: visible; 
+            transform: translateX(-50%) translateY(-20px);
+        }
 
         .container { padding: 100px 10%; background-color: #0b0b0b; position: relative; z-index: 10; }
         .video-section { text-align: center; margin-bottom: 80px; }
@@ -195,14 +211,13 @@ permalink: /
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // 3. FIXED PINNING: Page freezes for a short duration while inversion happens
+        // 1. PINNED INVERSION
         ScrollTrigger.create({
             trigger: "#quote-section",
             pin: true,
             start: "top top",
-            end: "+=100%", // How much extra "hold" time they have (approx half a screen)
+            end: "+=100%", 
             onUpdate: (self) => {
-                // Flash white once they've scrolled 20% into the hold
                 if (self.progress > 0.3) {
                     document.getElementById('quote-section').classList.add('active-inversion');
                 } else {
@@ -211,7 +226,7 @@ permalink: /
             }
         });
 
-        // 4. FIXED PARALLAX: Anchored specifically to the quote section
+        // 2. PARALLAX
         gsap.to("#parallax-bg", {
             y: "15%",
             scrollTrigger: {
@@ -222,6 +237,7 @@ permalink: /
             }
         });
 
+        // 3. VIDEO REVEAL (Typo Fixed: lore-octa -> lore-cta)
         const vid = document.getElementById("titleVideo");
         ScrollTrigger.create({
             trigger: "#projects",
@@ -234,7 +250,8 @@ permalink: /
                     vid.currentTime = vid.duration * self.progress;
                 }
 
-                const cta = document.getElementById('lore-octa');
+                const cta = document.getElementById('lore-cta');
+                // The button appears at 85% progress and stays locked until user scrolls past the pin
                 if (self.progress > 0.85) {
                     cta.classList.add('visible');
                 } else {
