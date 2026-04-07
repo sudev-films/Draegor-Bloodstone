@@ -32,6 +32,7 @@ permalink: /
             overflow-x: hidden;
         }
 
+        /* 1. ABSOLUTE NAVBAR (Moves away when you scroll) */
         .navbar {
             height: var(--nav-height);
             background-color: #050505;
@@ -80,16 +81,15 @@ permalink: /
             margin: 0; z-index: 10;
         }
 
-        /* 1. REFRESH FIX: We make the wrapper transparent so the image is never "hidden" */
+        /* 2. REFRESH FIX: The background image now starts as a solid layer */
         .inversion-wrapper {
             position: relative;
             height: 100vh;
-            background-color: transparent; 
+            background-color: #0b0b0b; 
             transition: background-color 1.2s ease;
             overflow: hidden;
         }
 
-        /* The space image now starts visible and solid */
         .space-bg {
             position: absolute;
             top: -40%; left: 0;
@@ -100,10 +100,7 @@ permalink: /
             transition: opacity 1.2s ease;
         }
 
-        .quote-container {
-            height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-        }
+        .quote-container { height: 100vh; display: flex; justify-content: center; align-items: center; }
 
         .quote-text {
             font-family: 'Source Serif 4', serif; font-size: 5.5rem; font-weight: 900;
@@ -111,35 +108,19 @@ permalink: /
             padding: 0.1em 0 0.2em; letter-spacing: -2px; transition: 0.5s ease;
         }
 
-        /* THE BUTTON: One unified style */
-        .lore-button {
-            display: inline-block !important;
-            padding: 18px 40px;
-            background-color: var(--gold) !important;
-            color: #000 !important;
-            text-decoration: none;
-            font-weight: 700;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            transition: 0.4s all ease;
-            border: none;
-        }
-
         .active-inversion .space-bg { opacity: 0; }
         .active-inversion { background-color: #fff !important; }
         .active-inversion .quote-text {
-            /* FIXED: Removed 'fixed' background to stop the disappearing text on refresh */
             background: var(--space-img) center center / cover no-repeat;
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
-        /* VIDEO TITLE REVEAL */
+        /* 3. VIDEO REVEAL: Length and Pinning */
         .video-pin-wrapper { height: 400vh; background: #000; position: relative; }
         .sticky-viewport { position: sticky; top: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
         #titleVideo { width: 100%; max-width: 1200px; height: auto; }
         
-        /* 2. THE BUTTON FIX: Set to stay in place once revealed */
+        /* THE DRAMATIC BUTTON */
         .post-reveal-content { 
             position: absolute; 
             bottom: 20%; 
@@ -152,9 +133,20 @@ permalink: /
             z-index: 20;
         }
         
-        .post-reveal-content.visible { 
-            opacity: 1; 
-            visibility: visible;
+        .post-reveal-content.visible { opacity: 1; visibility: visible; }
+
+        .lore-button {
+            display: inline-block !important;
+            padding: 18px 40px;
+            background-color: var(--gold) !important;
+            color: #000 !important;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: 0.4s all ease;
+            border: none;
         }
 
         .container { padding: 100px 10%; background-color: #0b0b0b; position: relative; z-index: 10; }
@@ -240,7 +232,7 @@ permalink: /
             }
         });
 
-        // 3. VIDEO REVEAL (Button Fix)
+        // 3. VIDEO REVEAL
         const vid = document.getElementById("titleVideo");
         ScrollTrigger.create({
             trigger: "#projects",
@@ -255,12 +247,11 @@ permalink: /
 
                 const cta = document.getElementById('lore-cta');
                 
-                // REVEAL LOGIC: Once it hits 85%, it stays visible forever as you scroll down
+                // Logic: Fades in and stays locked. 
+                // It only "disappears" if the user scrolls back up into the animation.
                 if (self.progress > 0.85) {
                     cta.classList.add('visible');
-                } 
-                // Only hides if you scroll BACK UP past 85%
-                else {
+                } else {
                     cta.classList.remove('visible');
                 }
             }
