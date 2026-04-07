@@ -16,7 +16,6 @@ permalink: /
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        /* RESET */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
@@ -33,7 +32,6 @@ permalink: /
             overflow-x: hidden;
         }
 
-        /* NAVBAR */
         .navbar {
             height: var(--nav-height);
             background-color: #050505;
@@ -45,19 +43,14 @@ permalink: /
             position: fixed;
             width: 100%;
             top: 0;
-            z-index: 100; /* Highest Layer */
+            z-index: 100;
         }
 
         .nav-left { display: flex; align-items: center; height: 100%; gap: 20px; }
         .nav-logo { height: var(--nav-height); width: auto; display: block; object-fit: cover; }
         .studio-name { font-family: 'Eagle Lake', serif; color: var(--gold); font-size: 1.6rem; }
-
         .nav-right { display: flex; align-items: center; }
-        .social-cluster {
-            display: flex; gap: 15px; align-items: center;
-            margin-right: 30px; padding-right: 20px;
-            border-right: 1px solid #333; 
-        }
+        .social-cluster { display: flex; gap: 15px; align-items: center; margin-right: 30px; padding-right: 20px; border-right: 1px solid #333; }
         .social-icon { width: 32px; transition: transform 0.2s; display: block; }
         .social-link:hover .social-icon { transform: scale(1.3); animation: vibrate 0.1s linear infinite; }
 
@@ -68,154 +61,68 @@ permalink: /
             100% { transform: scale(1.3) translate(0, 0); }
         }
 
-        .nav-txt {
-            color: #e0e0e0; text-decoration: none;
-            margin-left: 25px; font-size: 0.85rem;
-            text-transform: uppercase; font-weight: 600;
-            letter-spacing: 1px; transition: 0.3s;
-        }
+        .nav-txt { color: #e0e0e0; text-decoration: none; margin-left: 25px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
         .nav-txt:hover { color: var(--gold); }
 
-        /* HEADER */
-        header {
-            height: 100vh;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header video {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%; min-height: 100%;
-            z-index: -2;
-            object-fit: cover;
-        }
+        header { height: 100vh; width: 100%; position: relative; overflow: hidden; }
+        header video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; z-index: -2; object-fit: cover; }
 
         .overlay {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.7) 100%);
-            pointer-events: none;
-            z-index: 1;
+            pointer-events: none; z-index: 1;
         }
         
         .tagline { 
-            position: absolute;
-            top: 65%; left:50%; /* Adjusted slightly for better "Character Frame" */
-            transform: translate(-50%, -50%);
-            width: 90%;
-            font-family: 'Source Serif 4', serif;
-            font-size: 3.8rem;
-            font-weight: 800;
-            color: white; 
-            line-height: 1.2;
-            text-align: center;
-            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8), 2px 2px 10px rgba(0, 0, 0, 0.5);
-            margin: 0;
-            z-index: 10;
+            position: absolute; top: 65%; left:50%; transform: translate(-50%, -50%);
+            width: 90%; font-family: 'Source Serif 4', serif; font-size: 3.8rem; font-weight: 800; color: white; 
+            line-height: 1.2; text-align: center; text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8), 2px 2px 10px rgba(0, 0, 0, 0.7);
+            margin: 0; z-index: 10;
         }
 
-        /* INVERSION SECTION */
+        /* 1. FIXED INVERSION: Reduced height to remove that "Dead Space" */
         .inversion-wrapper {
             position: relative;
-            height: 160vh;
+            height: 100vh; /* Exactly one screen height */
             background-color: transparent;
             transition: background-color 0.6s ease;
             overflow: hidden;
         }
 
+        /* 2. FIXED SPACE DRIFT: Added massive top overhang to stop the black gap */
         .space-bg {
             position: absolute;
-            top: -25%; left: 0;
-            width: 100%; height: 160%;
+            top: -40%; left: 0;
+            width: 100%; height: 180%; 
             background: var(--space-img) center center / cover no-repeat;
             z-index: -5;
         }
 
         .quote-container {
-            position: sticky;
-            top: 0; height: 100vh;
+            height: 100vh;
             display: flex; justify-content: center; align-items: center;
         }
 
         .quote-text {
-            font-family: 'Source Serif 4', serif;
-            font-size: 5.5rem;
-            font-weight: 900;
-            text-align: center;
-            color: white;
-            max-width: 1200px;
-            line-height: 1.15;
-            padding: 0.1em 0 0.2em;
-            letter-spacing: -2px;
-            transition: 0.5s ease;
-            display: inline-block;
+            font-family: 'Source Serif 4', serif; font-size: 5.5rem; font-weight: 900;
+            text-align: center; color: white; max-width: 1200px; line-height: 1.15;
+            padding: 0.1em 0 0.2em; letter-spacing: -2px; transition: 0.5s ease;
         }
 
         .active-inversion { background-color: white !important; }
         .active-inversion .quote-text {
             background: var(--space-img) fixed center center / cover no-repeat;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
         /* VIDEO TITLE REVEAL */
-        .video-pin-wrapper {
-            height: 400vh;
-            background: #000;
-            position: relative;
-        }
-
-        .sticky-viewport {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-        }
-
+        .video-pin-wrapper { height: 400vh; background: #000; position: relative; }
+        .sticky-viewport { position: sticky; top: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
         #titleVideo { width: 100%; max-width: 1200px; height: auto; }
-
-        .post-reveal-content {
-            position: absolute;
-            bottom: 15%;
-            opacity: 0;
-            transition: 1s ease;
-            text-align: center;
-        }
+        .post-reveal-content { position: absolute; bottom: 15%; opacity: 0; transition: 1s ease; text-align: center; }
         .post-reveal-content.visible { opacity: 1; }
 
-        /* CONTENT */
-        .container { 
-            padding: 100px 10%; 
-            background-color: #0b0b0b; 
-            position: relative;
-            z-index: 10;
-        }
-        
-        .lore-reveal-zone { text-align: center; padding-bottom: 100px; }
-        .project-title-reveal { font-family: 'Source Serif 4', serif; font-size: 5rem; font-weight: 900; color: #e0e0e0; letter-spacing: 5px; margin-bottom: 20px; }
-        .lore-description { font-size: 1.2rem; color: #aaa; max-width: 700px; margin: 0 auto 40px auto; line-height: 1.8; }
-
-        .lore-button {
-            display: inline-block;
-            padding: 18px 40px;
-            background-color: var(--gold);
-            color: #000;
-            text-decoration: none;
-            font-weight: 700;
-            letter-spacing: 3px;
-            font-size: 0.9rem;
-            transition: 0.4s all ease;
-        }
-        .lore-button:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,215,0,0.2); }
-
+        .container { padding: 100px 10%; background-color: #0b0b0b; position: relative; z-index: 10; }
         .video-section { text-align: center; margin-bottom: 80px; }
         .video-section h2 { color: var(--gold); margin-bottom: 30px; letter-spacing: 2px; }
         iframe { width: 100%; max-width: 850px; height: 480px; border: 1px solid #333; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
@@ -256,12 +163,6 @@ permalink: /
     </section>
 
     <div class="container">
-        <div class="lore-reveal-zone">
-            <h1 class="project-title-reveal">DRAEGOR BLOODSTONE</h1>
-            <p class="lore-description">A tapestry of intersecting dimensions, forged across a decade of narrative intent.</p>
-            <a href="/Draegor-Bloodstone/draegor/" class="lore-button">DESCEND INTO THE LORE</a>
-        </div>
-        
         <div class="video-section">
             <h2>Latest Cinematic Update</h2>
             <iframe src="https://www.youtube.com/embed/lyXFACn-nWc" allowfullscreen></iframe>
@@ -278,9 +179,25 @@ permalink: /
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // 1. COMBINED PARALLAX + INVERSION LOGIC (Optimized)
+        // 3. FIXED PINNING: Page freezes for a short duration while inversion happens
+        ScrollTrigger.create({
+            trigger: "#quote-section",
+            pin: true,
+            start: "top top",
+            end: "+=50%", // How much extra "hold" time they have (approx half a screen)
+            onUpdate: (self) => {
+                // Flash white once they've scrolled 20% into the hold
+                if (self.progress > 0.2) {
+                    document.getElementById('quote-section').classList.add('active-inversion');
+                } else {
+                    document.getElementById('quote-section').classList.remove('active-inversion');
+                }
+            }
+        });
+
+        // 4. FIXED PARALLAX: Anchored specifically to the quote section
         gsap.to("#parallax-bg", {
-            y: "15%", // Creates the drift effect
+            y: "15%",
             scrollTrigger: {
                 trigger: "#quote-section",
                 start: "top bottom",
@@ -289,16 +206,6 @@ permalink: /
             }
         });
 
-        gsap.to("#quote-section", {
-            scrollTrigger: {
-                trigger: "#quote-section",
-                start: "top 150px", // The inversion threshold
-                onEnter: () => document.getElementById('quote-section').classList.add('active-inversion'),
-                onLeaveBack: () => document.getElementById('quote-section').classList.remove('active-inversion'),
-            }
-        });
-
-        // 2. VIDEO SCROLL LOGIC
         const vid = document.getElementById("titleVideo");
         ScrollTrigger.create({
             trigger: "#projects",
