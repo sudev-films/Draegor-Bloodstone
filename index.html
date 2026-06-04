@@ -82,7 +82,7 @@ permalink: /
         }
 
         /* NATIVE CSS STICKY VIDEO REVEAL (No Ghosting) */
-        .video-scroll-track { height: 300vh; position: relative; background: #000; }
+        .video-scroll-track { height: 400vh; position: relative; background: #000; }
         
         .video-sticky-frame {
             position: sticky; top: 0; height: 100vh; 
@@ -191,36 +191,38 @@ permalink: /
 
         // 3. LOOPING TITLE REVEAL (No Video Scrubbing!)
         // 3. THE LOOPING FADE REVEAL
-ScrollTrigger.create({
-    trigger: ".video-scroll-track",
-    start: "top top",
-    end: "bottom bottom",
-    scrub: true,
-    onUpdate: (self) => {
-        const vid = document.getElementById("titleVideo");
-        const cta = document.getElementById('lore-cta');
+// 3. THE LOOPING FADE REVEAL WITH DRAMATIC PAUSE
+        ScrollTrigger.create({
+            trigger: ".video-scroll-track",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true,
+            onUpdate: (self) => {
+                const vid = document.getElementById("titleVideo");
+                const cta = document.getElementById('lore-cta');
 
-        // ACT 1: FADE THE VIDEO IN
-        // Maps the first 40% of the scroll to the opacity of the video.
-        // If they scroll down, it brightens. If they scroll up, it dims.
-        if (self.progress <= 0.4) {
-            vid.style.opacity = self.progress * 2.5; 
-        } else {
-            vid.style.opacity = 1; // Locks at full brightness for the rest of the scroll
-        }
+                // ACT 1: FADE THE VIDEO IN
+                // Now happens in the first 30% of the longer scroll track
+                if (self.progress <= 0.3) {
+                    vid.style.opacity = self.progress * 3.33; // Math to fade from 0 to 1 smoothly
+                } else {
+                    vid.style.opacity = 1; 
+                }
 
-        // ACT 2: HOLD THE VIDEO
-        // (This happens naturally between 0.4 and 0.75 progress)
+                // ACT 2: FADE THE BUTTON IN
+                // The button now appears at 60% of the way through the track
+                if (self.progress > 0.6) {
+                    cta.classList.add('visible');
+                } else {
+                    cta.classList.remove('visible');
+                }
 
-        // ACT 3: FADE THE BUTTON IN
-        // Triggers when they are 75% of the way through the section
-        if (self.progress > 0.75) {
-            cta.classList.add('visible');
-        } else {
-            cta.classList.remove('visible');
-        }
-    }
-});
+                // ACT 3: THE PAUSE
+                // From 60% to 100% progress, absolutely nothing happens. 
+                // The video loops, the button sits there, and the user has to scroll 
+                // a bit more before the page finally unlocks and moves to the next section.
+            }
+        });
     </script>
 </body>
 </html>
