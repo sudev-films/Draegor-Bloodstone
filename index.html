@@ -82,7 +82,7 @@ permalink: /
         }
 
         /* NATIVE CSS STICKY VIDEO REVEAL (No Ghosting) */
-        .video-scroll-track { height: 400vh; position: relative; background: #000; }
+        .video-scroll-track { height: 200vh; position: relative; background: #000; }
         
         .video-sticky-frame {
             position: sticky; top: 0; height: 100vh; 
@@ -136,7 +136,7 @@ permalink: /
 
     <section class="video-scroll-track" id="projects">
         <div class="video-sticky-frame">
-            <video id="titleVideo" playsinline muted preload="auto">
+            <video id="titleVideo" autoplay loop muted playsinline preload="auto">
                 <source src="title-reveal.mp4" type="video/mp4">
             </video>
             
@@ -189,20 +189,18 @@ permalink: /
             }
         });
 
-        // 3. VIDEO REVEAL (No Pinning!)
-        const vid = document.getElementById("titleVideo");
+        // 3. LOOPING TITLE REVEAL (No Video Scrubbing!)
         ScrollTrigger.create({
             trigger: ".video-scroll-track",
             start: "top top",
             end: "bottom bottom",
-            scrub: 1, // Smooth scrub
+            scrub: true, 
             onUpdate: (self) => {
-                if (vid.duration) {
-                    vid.currentTime = vid.duration * self.progress;
-                }
+                // Removed the vid.currentTime logic! The video now plays on its own.
                 
                 const cta = document.getElementById('lore-cta');
-                if (self.progress > 0.85) {
+                // The button fades in halfway through this shorter scroll track
+                if (self.progress > 0.5) {
                     cta.classList.add('visible');
                 } else {
                     cta.classList.remove('visible');
