@@ -25,6 +25,7 @@ permalink: /draegor/
             color: #e0e0e0; 
             font-family: 'Segoe UI', sans-serif; 
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* Copy-pasted Navbar CSS from Index to ensure it looks the same */
@@ -50,22 +51,40 @@ permalink: /draegor/
         .social-icon { width: 32px; transition: 0.2s; }
         .nav-txt { color: #e0e0e0; text-decoration: none; margin-left: 25px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; }
 
-        /* 2. DRAEGOR PAGE CONTENT STYLING */
-        .lore-header {
+        /* 2. SCROLL-SCRUBBED VIDEO HERO STYLING */
+        .scrub-container {
             margin-top: var(--nav-height);
-            height: 60vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0), #0b0b0b), url('draegor-hero.jpg'); /* Placeholder for your character render */
-            background-size: cover;
-            background-position: center;
+            height: 350vh; /* Adjust track height to control scrubbing speed */
+            position: relative;
+            background: #000;
         }
 
+        .scrub-sticky-frame {
+            position: sticky;
+            top: var(--nav-height);
+            width: 100%;
+            height: calc(100vh - var(--nav-height));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            overflow: hidden;
+        }
+
+        #introScrubVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Preserves letterboxing without edge clipping */
+            background: #000;
+        }
+
+        /* 3. DRAEGOR PAGE CONTENT STYLING */
         .lore-container {
             padding: 100px 10%;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         h1.lore-title {
@@ -80,11 +99,18 @@ permalink: /draegor/
 
     {% include navbar.html %}
 
-    <header class="lore-header">
-        <h1 class="lore-title">The Chronicles</h1>
-    </header>
+    <!-- Interactive Scroll-Scrub Section -->
+    <section class="scrub-container">
+        <div class="scrub-sticky-frame">
+            <video id="introScrubVideo" playsinline preload="auto" muted>
+                <source src="draegor-intro.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
 
+    <!-- Lore Content (Unlocks once scrolling passes the video) -->
     <main class="lore-container">
+        <h1 class="lore-title">The Chronicles</h1>
         <h2>Chapter I: The Intersection</h2>
         <p>Your epic lore about Norse, Greek, and Hindu mythologies starts here...</p>
     </main>
@@ -93,5 +119,35 @@ permalink: /draegor/
         <center style="padding: 50px; color: #555;">&copy; 2026 VEDIC ASURA STUDIOS</center>
     </footer>
 
+    <!-- GSAP & ScrollTrigger CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const introVid = document.getElementById("introScrubVideo");
+
+        function initScrub() {
+            ScrollTrigger.create({
+                trigger: ".scrub-container",
+                start: "top top+=" + getComputedStyle(document.documentElement).getPropertyValue('--nav-height'),
+                end: "bottom bottom",
+                scrub: 0.5, // Smooth inertia dampening
+                onUpdate: (self) => {
+                    if (introVid.duration) {
+                        introVid.currentTime = introVid.duration * self.progress;
+                    }
+                }
+            });
+        }
+
+        // Initialize as soon as video duration is available
+        if (introVid.readyState >= 1) {
+            initScrub();
+        } else {
+            introVid.addEventListener("loadedmetadata", initScrub);
+        }
+    </script>
 </body>
 </html>
