@@ -8,7 +8,7 @@ permalink: /draegor/
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lore | Draegor Bloodstone</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Source+Serif+4:wght@800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;0,8..60,900;1,8..60,400&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/Draegor-Bloodstone/favicon.png">
 
     <style>
@@ -28,7 +28,7 @@ permalink: /draegor/
             overflow-x: hidden;
         }
 
-        /* Copy-pasted Navbar CSS from Index to ensure it looks the same */
+        /* Navbar CSS */
         .navbar {
             height: var(--nav-height);
             background-color: #050505;
@@ -51,10 +51,10 @@ permalink: /draegor/
         .social-icon { width: 32px; transition: 0.2s; }
         .nav-txt { color: #e0e0e0; text-decoration: none; margin-left: 25px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; }
 
-        /* 2. SCROLL-SCRUBBED VIDEO HERO STYLING */
+        /* 2. SCROLL-SCRUBBED VIDEO & BLUR OVERLAY HERO */
         .scrub-container {
             margin-top: var(--nav-height);
-            height: 500vh; /* Adjust track height to control scrubbing speed */
+            height: 500vh; /* Scrub resolution & holding distance */
             position: relative;
             background: #000;
         }
@@ -72,26 +72,79 @@ permalink: /draegor/
         }
 
         #introScrubVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Zooms in slightly to fill every pixel */
+            object-fit: cover;
             background: #000;
+            z-index: 1;
         }
 
-        /* 3. DRAEGOR PAGE CONTENT STYLING */
-        .lore-container {
-            padding: 100px 10%;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
+        /* 3. BLUR BACKDROP & LORE CARD */
+        .lore-overlay-wrap {
+            position: absolute;
+            inset: 0;
             z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            pointer-events: none;
         }
 
-        h1.lore-title {
-            font-family: 'Source Serif 4', serif;
-            font-size: 4rem;
+        .lore-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.45);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            opacity: 0;
+            will-change: opacity;
+        }
+
+        .lore-card {
+            position: relative;
+            z-index: 3;
+            max-width: 820px;
+            padding: 48px 56px;
+            background: rgba(11, 11, 11, 0.65);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.08);
+            opacity: 0;
+            transform: translateY(30px);
+            will-change: transform, opacity;
+            text-align: center;
+        }
+
+        .lore-card h1 {
+            font-family: 'Eagle Lake', serif;
+            font-size: 2.5rem;
             color: var(--gold);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 18px rgba(255, 215, 0, 0.35);
+        }
+
+        .lore-card p {
+            font-family: 'Source Serif 4', Georgia, serif;
+            font-size: 1.25rem;
+            line-height: 1.85;
+            color: #dcdcdc;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .lore-card {
+                padding: 30px 24px;
+            }
+            .lore-card h1 {
+                font-size: 1.85rem;
+            }
+            .lore-card p {
+                font-size: 1.05rem;
+            }
         }
     </style>
 </head>
@@ -99,21 +152,25 @@ permalink: /draegor/
 
     {% include navbar.html %}
 
-    <!-- Interactive Scroll-Scrub Section -->
+    <!-- Interactive Scroll-Scrub Section with Overlay -->
     <section class="scrub-container">
         <div class="scrub-sticky-frame">
             <video id="introScrubVideo" playsinline preload="auto" muted>
-    <source src="/Draegor-Bloodstone/draegor-intro.mp4" type="video/mp4">
+                <source src="/Draegor-Bloodstone/draegor-intro.mp4" type="video/mp4">
             </video>
+
+            <!-- Lore Overlay (Blurs video and reveals text on late scrub) -->
+            <div class="lore-overlay-wrap">
+                <div class="lore-backdrop" id="loreBackdrop"></div>
+                <div class="lore-card" id="loreCard">
+                    <h1>Draegor Bloodstone</h1>
+                    <p>
+                        Forged at the crossroads of primordial wrath and forgotten divinity, Draegor Bloodstone walks the twilight between mythologies. Bound to stone steeped in ancient slaughter and channeled by celestial fury, his awakening heralds the reckoning of gods, titans, and asuras alike.
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
-
-    <!-- Lore Content (Unlocks once scrolling passes the video) -->
-    <main class="lore-container">
-        <h1 class="lore-title">The Chronicles</h1>
-        <h2>Chapter I: The Intersection</h2>
-        <p>Your epic lore about Norse, Greek, and Hindu mythologies starts here...</p>
-    </main>
 
     <footer>
         <center style="padding: 50px; color: #555;">&copy; 2026 VEDIC ASURA STUDIOS</center>
@@ -126,40 +183,58 @@ permalink: /draegor/
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-const introVid = document.getElementById("introScrubVideo");
+        const introVid = document.getElementById("introScrubVideo");
+        const loreBackdrop = document.getElementById("loreBackdrop");
+        const loreCard = document.getElementById("loreCard");
 
-function initScrub() {
-    // Force first frame render
-    introVid.currentTime = 0.001;
+        function initScrub() {
+            introVid.currentTime = 0.001;
 
-    // Virtual proxy object to hold the target time
-    const videoProxy = { currentTime: 0 };
+            const videoProxy = { currentTime: 0 };
 
-    // GSAP tween that provides continuous deceleration
-    const scrubTween = gsap.to(videoProxy, {
-        currentTime: introVid.duration,
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".scrub-container",
-            start: "top top+=" + getComputedStyle(document.documentElement).getPropertyValue('--nav-height'),
-            end: "bottom bottom",
-            scrub: 1.2, // Adds cinematic inertia damping (try 0.8 to 1.5)
-        },
-        onUpdate: () => {
-            // Only update when time actually changes
-            if (Math.abs(introVid.currentTime - videoProxy.currentTime) > 0.01) {
-                introVid.currentTime = videoProxy.currentTime;
-            }
+            ScrollTrigger.create({
+                trigger: ".scrub-container",
+                start: "top top+=" + getComputedStyle(document.documentElement).getPropertyValue('--nav-height'),
+                end: "bottom bottom",
+                scrub: 1.2,
+                onUpdate: (self) => {
+                    const progress = self.progress;
+
+                    // Phase 1: Scrub video from 0% to 75% scroll progress
+                    // Clamps to duration once 75% is reached
+                    const videoProgress = Math.min(progress / 0.75, 1);
+                    if (introVid.duration) {
+                        videoProxy.currentTime = introVid.duration * videoProgress;
+                        if (Math.abs(introVid.currentTime - videoProxy.currentTime) > 0.01) {
+                            introVid.currentTime = videoProxy.currentTime;
+                        }
+                    }
+
+                    // Phase 2: Fade in blur backdrop & reveal text from 75% to 95% scroll progress
+                    if (progress > 0.75) {
+                        const overlayProgress = Math.min((progress - 0.75) / 0.20, 1);
+                        
+                        // Fade in backdrop blur
+                        loreBackdrop.style.opacity = overlayProgress;
+
+                        // Slide up and fade in lore card
+                        loreCard.style.opacity = overlayProgress;
+                        loreCard.style.transform = `translateY(${30 * (1 - overlayProgress)}px)`;
+                    } else {
+                        loreBackdrop.style.opacity = 0;
+                        loreCard.style.opacity = 0;
+                        loreCard.style.transform = 'translateY(30px)';
+                    }
+                }
+            });
         }
-    });
-}
 
-if (introVid.readyState >= 1) {
-    initScrub();
-} else {
-    introVid.addEventListener("loadedmetadata", initScrub);
-    introVid.load();
-}
+        if (introVid.readyState >= 1) {
+            initScrub();
+        } else {
+            introVid.addEventListener("loadedmetadata", initScrub);
+            introVid.load();
+        }
     </script>
 </body>
 </html>
