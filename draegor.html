@@ -126,28 +126,40 @@ permalink: /draegor/
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        const introVid = document.getElementById("introScrubVideo");
+const introVid = document.getElementById("introScrubVideo");
 
-        function initScrub() {
-            ScrollTrigger.create({
-                trigger: ".scrub-container",
-                start: "top top+=" + getComputedStyle(document.documentElement).getPropertyValue('--nav-height'),
-                end: "bottom bottom",
-                scrub: 0.5, // Smooth inertia dampening
-                onUpdate: (self) => {
-                    if (introVid.duration) {
-                        introVid.currentTime = introVid.duration * self.progress;
-                    }
-                }
-            });
-        }
+function initScrub() {
+    // Force first frame render
+    introVid.currentTime = 0.001;
 
-        // Initialize as soon as video duration is available
-        if (introVid.readyState >= 1) {
-            initScrub();
-        } else {
-            introVid.addEventListener("loadedmetadata", initScrub);
+    // Virtual proxy object to hold the target time
+    const videoProxy = { currentTime: 0 };
+
+    // GSAP tween that provides continuous deceleration
+    const scrubTween = gsap.to(videoProxy, {
+        currentTime: introVid.duration,
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".scrub-container",
+            start: "top top+=" + getComputedStyle(document.documentElement).getPropertyValue('--nav-height'),
+            end: "bottom bottom",
+            scrub: 1.2, // Adds cinematic inertia damping (try 0.8 to 1.5)
+        },
+        onUpdate: () => {
+            // Only update when time actually changes
+            if (Math.abs(introVid.currentTime - videoProxy.currentTime) > 0.01) {
+                introVid.currentTime = videoProxy.currentTime;
+            }
         }
+    });
+}
+
+if (introVid.readyState >= 1) {
+    initScrub();
+} else {
+    introVid.addEventListener("loadedmetadata", initScrub);
+    introVid.load();
+}
     </script>
 </body>
 </html>
