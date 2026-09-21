@@ -51,10 +51,10 @@ permalink: /draegor/
         .social-icon { width: 32px; transition: 0.2s; }
         .nav-txt { color: #e0e0e0; text-decoration: none; margin-left: 25px; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; }
 
-        /* 2. SCROLL-SCRUBBED VIDEO & BLUR OVERLAY HERO */
+        /* 2. SCROLL-SCRUBBED VIDEO HERO STYLING */
         .scrub-container {
             margin-top: var(--nav-height);
-            height: 500vh; /* Scrub resolution & holding distance */
+            height: 500vh; 
             position: relative;
             background: #000;
         }
@@ -82,7 +82,7 @@ permalink: /draegor/
             z-index: 1;
         }
 
-        /* 3. BLUR BACKDROP & LORE CARD */
+        /* 3. PURE BLUR BACKDROP & UNBOXED FLOATING TEXT */
         .lore-overlay-wrap {
             position: absolute;
             inset: 0;
@@ -90,60 +90,64 @@ permalink: /draegor/
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 0 8%;
             pointer-events: none;
         }
 
+        /* Pure optical blur without tint, darken, or vignette */
         .lore-backdrop {
             position: absolute;
             inset: 0;
-            background: rgba(5, 5, 5, 0.45);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            background: transparent;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             opacity: 0;
             will-change: opacity;
         }
 
-        .lore-card {
+        /* Unboxed, borderless floating content */
+        .lore-content {
             position: relative;
             z-index: 3;
-            max-width: 820px;
-            padding: 48px 56px;
-            background: rgba(11, 11, 11, 0.65);
-            border: 1px solid rgba(255, 215, 0, 0.25);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 215, 0, 0.08);
+            max-width: 900px;
+            background: none;
+            border: none;
+            box-shadow: none;
+            padding: 0;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(25px);
             will-change: transform, opacity;
             text-align: center;
         }
 
-        .lore-card h1 {
+        .lore-content h1 {
             font-family: 'Eagle Lake', serif;
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--gold);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             letter-spacing: 2px;
-            text-shadow: 0 0 18px rgba(255, 215, 0, 0.35);
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
         }
 
-        .lore-card p {
+        .lore-content p {
             font-family: 'Source Serif 4', Georgia, serif;
-            font-size: 1.25rem;
-            line-height: 1.85;
-            color: #dcdcdc;
+            font-size: 1.35rem;
+            line-height: 1.9;
+            color: #f0f0f0;
             font-weight: 400;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.9);
         }
 
         @media (max-width: 768px) {
-            .lore-card {
-                padding: 30px 24px;
+            .lore-overlay-wrap {
+                padding: 0 6%;
             }
-            .lore-card h1 {
-                font-size: 1.85rem;
+            .lore-content h1 {
+                font-size: 2rem;
             }
-            .lore-card p {
-                font-size: 1.05rem;
+            .lore-content p {
+                font-size: 1.1rem;
+                line-height: 1.7;
             }
         }
     </style>
@@ -152,17 +156,17 @@ permalink: /draegor/
 
     {% include navbar.html %}
 
-    <!-- Interactive Scroll-Scrub Section with Overlay -->
+    <!-- Interactive Scroll-Scrub Section -->
     <section class="scrub-container">
         <div class="scrub-sticky-frame">
             <video id="introScrubVideo" playsinline preload="auto" muted>
                 <source src="/Draegor-Bloodstone/draegor-intro.mp4" type="video/mp4">
             </video>
 
-            <!-- Lore Overlay (Blurs video and reveals text on late scrub) -->
+            <!-- Text & Blur Overlay -->
             <div class="lore-overlay-wrap">
                 <div class="lore-backdrop" id="loreBackdrop"></div>
-                <div class="lore-card" id="loreCard">
+                <div class="lore-content" id="loreContent">
                     <h1>Draegor Bloodstone</h1>
                     <p>
                         Forged at the crossroads of primordial wrath and forgotten divinity, Draegor Bloodstone walks the twilight between mythologies. Bound to stone steeped in ancient slaughter and channeled by celestial fury, his awakening heralds the reckoning of gods, titans, and asuras alike.
@@ -185,7 +189,7 @@ permalink: /draegor/
 
         const introVid = document.getElementById("introScrubVideo");
         const loreBackdrop = document.getElementById("loreBackdrop");
-        const loreCard = document.getElementById("loreCard");
+        const loreContent = document.getElementById("loreContent");
 
         function initScrub() {
             introVid.currentTime = 0.001;
@@ -201,7 +205,6 @@ permalink: /draegor/
                     const progress = self.progress;
 
                     // Phase 1: Scrub video from 0% to 75% scroll progress
-                    // Clamps to duration once 75% is reached
                     const videoProgress = Math.min(progress / 0.75, 1);
                     if (introVid.duration) {
                         videoProxy.currentTime = introVid.duration * videoProgress;
@@ -210,20 +213,20 @@ permalink: /draegor/
                         }
                     }
 
-                    // Phase 2: Fade in blur backdrop & reveal text from 75% to 95% scroll progress
+                    // Phase 2: Fade in pure blur & reveal text from 75% to 95%
                     if (progress > 0.75) {
                         const overlayProgress = Math.min((progress - 0.75) / 0.20, 1);
                         
-                        // Fade in backdrop blur
+                        // Pure optical blur transition
                         loreBackdrop.style.opacity = overlayProgress;
 
-                        // Slide up and fade in lore card
-                        loreCard.style.opacity = overlayProgress;
-                        loreCard.style.transform = `translateY(${30 * (1 - overlayProgress)}px)`;
+                        // Slide up and reveal unboxed text
+                        loreContent.style.opacity = overlayProgress;
+                        loreContent.style.transform = `translateY(${25 * (1 - overlayProgress)}px)`;
                     } else {
                         loreBackdrop.style.opacity = 0;
-                        loreCard.style.opacity = 0;
-                        loreCard.style.transform = 'translateY(30px)';
+                        loreContent.style.opacity = 0;
+                        loreContent.style.transform = 'translateY(25px)';
                     }
                 }
             });
